@@ -1,0 +1,95 @@
+{% extends "pages/base.html" %} {% block title %} Thông tin Mai Tỵ {%endblock%}
+{% block content %}
+<section class="text-gray-600 body-font">
+   <div class="flex ml-28">
+      <div class="w-full text-left">
+         <nav aria-label="breadcrumb" class="block w-full">
+            <ol
+               class="flex w-full flex-wrap items-center rounded-md bg-blue-gray-50 bg-opacity-60 py-2 px-4">
+               <li
+                  class="flex cursor-pointer items-center font-sans text-sm font-normal leading-normal text-blue-gray-900 antialiased transition-colors duration-300 hover:text-pink-500 hover:fill-pink-500">
+                  <a class="opacity-60" href="{% url 'home' %}">
+                     <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        x="0px"
+                        y="0px"
+                        width="16"
+                        height="16"
+                        color="currentColor"
+                        viewBox="0 0 48 48">
+                        <path
+                           d="M 23.951172 4 A 1.50015 1.50015 0 0 0 23.072266 4.3222656 L 8.859375 15.519531 C 7.0554772 16.941163 6 19.113506 6 21.410156 L 6 40.5 C 6 41.863594 7.1364058 43 8.5 43 L 18.5 43 C 19.863594 43 21 41.863594 21 40.5 L 21 30.5 C 21 30.204955 21.204955 30 21.5 30 L 26.5 30 C 26.795045 30 27 30.204955 27 30.5 L 27 40.5 C 27 41.863594 28.136406 43 29.5 43 L 39.5 43 C 40.863594 43 42 41.863594 42 40.5 L 42 21.410156 C 42 19.113506 40.944523 16.941163 39.140625 15.519531 L 24.927734 4.3222656 A 1.50015 1.50015 0 0 0 23.951172 4 z M 24 7.4101562 L 37.285156 17.876953 C 38.369258 18.731322 39 20.030807 39 21.410156 L 39 40 L 30 40 L 30 30.5 C 30 28.585045 28.414955 27 26.5 27 L 21.5 27 C 19.585045 27 18 28.585045 18 30.5 L 18 40 L 9 40 L 9 21.410156 C 9 20.030807 9.6307412 18.731322 10.714844 17.876953 L 24 7.4101562 z"></path>
+                     </svg>
+                  </a>
+                  <span
+                     class="pointer-events-none mx-2 select-none font-sans text-sm font-normal leading-normal text-blue-gray-500 antialiased">
+                     /
+                  </span>
+               </li>
+               <li
+                  class="flex cursor-pointer items-center font-sans text-sm font-normal leading-normal text-blue-gray-900 antialiased transition-colors duration-300 hover:text-pink-500">
+                  <a
+                     class="font-medium text-blue-gray-900 transition-colors hover:text-pink-500"
+                     href="{% url 'about' %}">
+                     Thông tin
+                  </a>
+               </li>
+            </ol>
+         </nav>
+      </div>
+   </div>
+   <div class="container px-5 pb-24 mt-12 mx-auto flex flex-wrap">
+      <div
+         class="flex flex-wrap -mx-4 mt-auto mb-auto lg:w-1/2 sm:w-2/3 content-start sm:pr-10">
+         <div class="w-full sm:p-4 px-4 mb-6 prose prose-slate">
+            <h1 class="title-font font-medium text-xl mb-2 text-gray-900">
+               Muốn phát triển nhanh hãy theo ma đạo
+            </h1>
+            <div class="leading-relaxed">
+               Ngành Ma đạo Việt Nam hiện nay ở đỉnh cao của sự thăng hoa. Có
+               thể nói Ma đạo là bá chủ của các môn phái. Vừa có pháp lực, có uy
+               quyền. Vừa kiếm được nhiều linh thạch lại được thiên hạ kính
+               ngưỡng. Thằng em mình học bách khoa cơ khí, sinh năm 96. Tự mình
+               tu luyện học ma pháp rồi đi làm thuê cho bang phái Mỹ 2 năm nay.
+               Mỗi tối tu luyện 3-4 giờ là xong nhiệm vụ. Lương tháng 3k6 linh
+               thạch. Nhưng thu nhập chính vẫn là từ nhận các nhiệm vụ bên ngoài
+               làm thêm. Tuần làm 2,3 cái nhẹ nhàng 9,10k linh thạch không phải
+               nộp thuế. Làm gần được 3 năm mà nhà xe nó đã đổi đủ cả. Nghĩ mà
+               ghen tỵ.
+            </div>
+         </div>
+         <div class="p-4 sm:w-1/2 lg:w-1/4 w-1/2">
+            <h2 class="title-font font-medium text-3xl text-gray-900">
+               {{userCount}}
+            </h2>
+            <p class="leading-relaxed">Users</p>
+         </div>
+         <div class="p-4 sm:w-1/2 lg:w-1/4 w-1/2">
+            <h2 class="title-font font-medium text-3xl text-gray-900">
+               {{collectionCount}}
+            </h2>
+            <p class="leading-relaxed">Collections</p>
+         </div>
+         <div class="p-4 sm:w-1/2 lg:w-1/4 w-1/2">
+            <h2 class="title-font font-medium text-3xl text-gray-900">
+               {{blogCount}}
+            </h2>
+            <p class="leading-relaxed">Blogs</p>
+         </div>
+         <div class="p-4 sm:w-1/2 lg:w-1/4 w-1/2">
+            <h2 class="title-font font-medium text-3xl text-gray-900">
+               {{commentCount}}
+            </h2>
+            <p class="leading-relaxed">Comments</p>
+         </div>
+      </div>
+      <div
+         class="lg:w-1/2 sm:w-1/3 w-full rounded-lg overflow-hidden mt-6 sm:mt-0">
+         <img
+            class="object-cover object-center w-full h-full"
+            src="https://images.unsplash.com/photo-1592609931095-54a2168ae893?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=300"
+            alt="stats" />
+      </div>
+   </div>
+</section>
+{% endblock%}

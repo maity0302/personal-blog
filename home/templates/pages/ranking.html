@@ -1,0 +1,188 @@
+{% extends 'pages/base.html' %} {% block title %} Xếp hạng bài viết {%endblock%}
+{% block content %}
+<script type="module" src="/static/js/tabs.js"></script>
+<script>
+    function redirectTo(value) {
+        console.log(value)
+        
+        if (value) {
+            window.location.href = `/rank/${value}`
+        }
+    }
+</script>
+<h1 class="text-center my-4 font-bold text-2xl">Bảng xếp hạng blog</h1>
+<div class="w-full flex justify-center">
+   <div class="w-2/3 border border-gray-200 rounded-lg p-2">
+    <div class="flex justify-end items-center">
+        <div>
+            <form action="{% url 'rank' period=period %}" method="get" class="flex items-center">
+                sắp xếp:
+                {% if order == '1' %}
+                <input type="hidden" name="order" value="0">
+                <button type="submit">
+                    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" height="24" viewBox="0 0 48 48">
+                        <path d="M 32.476562 4.9785156 A 1.50015 1.50015 0 0 0 31 6.5 L 31 37.878906 L 26.560547 33.439453 A 1.50015 1.50015 0 1 0 24.439453 35.560547 L 31.439453 42.560547 A 1.50015 1.50015 0 0 0 33.560547 42.560547 L 40.560547 35.560547 A 1.50015 1.50015 0 1 0 38.439453 33.439453 L 34 37.878906 L 34 6.5 A 1.50015 1.50015 0 0 0 32.476562 4.9785156 z M 11 8 C 10.172 8 9.5 8.671 9.5 9.5 C 9.5 10.329 10.172 11 11 11 L 15.267578 11 L 9.7363281 19.695312 C 9.4423281 20.157312 9.4235 20.742656 9.6875 21.222656 C 9.9495 21.702656 10.453953 22 11.001953 22 L 18.001953 22 C 18.829953 22 19.501953 21.329 19.501953 20.5 C 19.501953 19.671 18.829953 19 18.001953 19 L 13.732422 19 L 19.265625 10.304688 C 19.559625 9.8426875 19.578453 9.2573438 19.314453 8.7773438 C 19.052453 8.2973437 18.548 8 18 8 L 11 8 z M 14.5 27 C 13.891 27 13.342328 27.368641 13.111328 27.931641 L 8.6113281 38.931641 C 8.2973281 39.698641 8.6646406 40.573719 9.4316406 40.886719 C 10.198641 41.202719 11.075672 40.834406 11.388672 40.066406 L 11.824219 39 L 17.175781 39 L 17.611328 40.066406 C 17.849328 40.647406 18.410953 41 19.001953 41 C 19.190953 41 19.382359 40.964672 19.568359 40.888672 C 20.334359 40.575672 20.702672 39.698641 20.388672 38.931641 L 15.888672 27.931641 C 15.658672 27.367641 15.109 27 14.5 27 z M 14.5 32.460938 L 15.947266 36 L 13.052734 36 L 14.5 32.460938 z"></path>
+                        </svg>
+                </button>
+                {% else %}
+                <input type="hidden" name="order" value="1">
+                <button type="submit">
+                    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" height="24" viewBox="0 0 48 48">
+                        <path d="M 32.478516 6 A 1.50015 1.50015 0 0 0 31.439453 6.4394531 L 24.439453 13.439453 A 1.50015 1.50015 0 1 0 26.560547 15.560547 L 31 11.121094 L 31 41.5 A 1.50015 1.50015 0 1 0 34 41.5 L 34 11.121094 L 38.439453 15.560547 A 1.50015 1.50015 0 1 0 40.560547 13.439453 L 33.560547 6.4394531 A 1.50015 1.50015 0 0 0 32.478516 6 z M 14.5 7.9980469 C 13.891 7.9980469 13.341328 8.3656875 13.111328 8.9296875 L 8.6113281 19.929688 C 8.2973281 20.696687 8.6646406 21.573719 9.4316406 21.886719 C 10.198641 22.202719 11.075672 21.834406 11.388672 21.066406 L 11.826172 19.998047 L 17.173828 19.998047 L 17.611328 21.066406 C 17.849328 21.647406 18.410953 21.998047 19.001953 21.998047 C 19.190953 21.998047 19.382359 21.963719 19.568359 21.886719 C 20.334359 21.573719 20.702672 20.696687 20.388672 19.929688 L 15.888672 8.9296875 C 15.658672 8.3656875 15.109 7.9980469 14.5 7.9980469 z M 14.5 13.460938 L 15.947266 16.998047 L 13.052734 16.998047 L 14.5 13.460938 z M 11 27 C 10.172 27 9.5 27.671 9.5 28.5 C 9.5 29.329 10.172 30 11 30 L 15.267578 30 L 9.7363281 38.695312 C 9.4423281 39.157312 9.4235 39.742656 9.6875 40.222656 C 9.9495 40.702656 10.453953 41 11.001953 41 L 18.001953 41 C 18.829953 41 19.501953 40.329 19.501953 39.5 C 19.501953 38.671 18.829953 38 18.001953 38 L 13.732422 38 L 19.265625 29.304688 C 19.559625 28.842688 19.578453 28.257344 19.314453 27.777344 C 19.052453 27.297344 18.548 27 18 27 L 11 27 z"></path>
+                        </svg>
+                </button>
+                {% endif %}
+            </form>
+        </div>
+        <span class="mx-2">
+        </span>
+        <div>
+        <label for="period">xếp hạng:</label>
+        <select name="period" class="appearance-none rounded-md py-2 px-4 bg-white border border-gray-300 text-gray-700 leading-tight focus:outline-none focus:border-blue-500" onchange="redirectTo(this.value)">
+            <option value="tuan" {% if period == 'tuan' %} selected {% endif %}>theo tuần</option>
+            <option value="thang" {% if period == 'thang' %} selected {% endif %}>Theo tháng</option>
+            <option value="nam" {% if period == 'nam' %} selected {% endif %}>Theo năm</option>
+        </select>
+        </div>
+    </div>
+    
+      <div class="relative right-0">
+         <ul
+            class="relative flex list-none flex-wrap rounded-xl bg-blue-gray-50/60 p-1"
+            data-tabs="tabs"
+            role="list">
+            <li class="z-30 flex-auto text-center">
+               <a
+                  class="text-slate-700 z-30 mb-0 flex w-full cursor-pointer items-center justify-center rounded-lg border-0 bg-inherit px-0 py-1 transition-all ease-in-out"
+                  data-tab-target=""
+                  active=""
+                  role="tab"
+                  aria-selected="true"
+                  aria-controls="like">
+                  <span class="ml-1">Đánh giá</span>
+               </a>
+            </li>
+            <li class="z-30 flex-auto text-center">
+               <a
+                  class="text-slate-700 z-30 mb-0 flex w-full cursor-pointer items-center justify-center rounded-lg border-0 bg-inherit px-0 py-1 transition-all ease-in-out"
+                  data-tab-target=""
+                  role="tab"
+                  aria-selected="false"
+                  aria-controls="comment">
+                  <span class="ml-1">Bình luận</span>
+               </a>
+            </li>
+            <li class="z-30 flex-auto text-center">
+               <a
+                  class="text-slate-700 z-30 mb-0 flex w-full cursor-pointer items-center justify-center rounded-lg border-0 bg-inherit px-0 py-1 transition-all ease-in-out"
+                  data-tab-target=""
+                  role="tab"
+                  aria-selected="false"
+                  aria-controls="view">
+                  <span class="ml-1">Lượt xem</span>
+               </a>
+            </li>
+         </ul>
+         <div data-tab-content="" class="p-5">
+            <div class="block opacity-100" id="like" role="tabpanel">
+                <div class="flex flex-wrap -m-4">
+                    {% if not blogLike %}
+                    <p class="mx-auto my-5"> Không có bài viết nào. </p>
+                    {% else %}
+                    {% for blog in blogLike %}
+                    <div class="p-4 lg:w-1/3 md:w-1/2">
+                       <div class="h-full flex flex-col items-center text-center">
+                          <img
+                             alt="team"
+                             class="flex-shrink-0 rounded-lg w-full h-56 object-cover object-center mb-4"
+                             src="{{blog.image.url}}" />
+                          <div class="w-full">
+                             <h2
+                                class="title-font font-medium text-lg text-gray-900 line-clamp-1">
+                                {{blog.title}}
+                             </h2>
+                             <h3 class="text-gray-500 mb-3">
+                                {{blog.userid.firstname}} {{blog.userid.lastname}}
+                             </h3>
+                             <span class="inline-flex">
+                                <a href="/blog/{{blog.id}}" class="text-indigo-500"
+                                   >Xem thêm</a
+                                >
+                             </span>
+                          </div>
+                       </div>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="hidden opacity-0" id="comment" role="tabpanel">
+                <div class="flex flex-wrap -m-4">
+                    {% if not blogComment %}
+                    <p class="mx-auto my-5"> Không có bài viết nào. </p>
+                    {% else %}
+                    {% for blog in blogComment %}
+                    <div class="p-4 lg:w-1/3 md:w-1/2">
+                       <div class="h-full flex flex-col items-center text-center">
+                          <img
+                             alt="team"
+                             class="flex-shrink-0 rounded-lg w-full h-56 object-cover object-center mb-4"
+                             src="{{blog.image.url}}" />
+                          <div class="w-full">
+                             <h2
+                                class="title-font font-medium text-lg text-gray-900 line-clamp-1">
+                                {{blog.title}}
+                             </h2>
+                             <h3 class="text-gray-500 mb-3">
+                                {{blog.userid.firstname}} {{blog.userid.lastname}}
+                             </h3>
+                             <span class="inline-flex">
+                                <a href="/blog/{{blog.id}}" class="text-indigo-500"
+                                   >Xem thêm</a
+                                >
+                             </span>
+                          </div>
+                       </div>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                 </div>
+            </div>
+            <div class="hidden opacity-0" id="view" role="tabpanel">
+                <div class="flex flex-wrap -m-4">
+                    {% if not blogView %}
+                    <p class="mx-auto my-5"> Không có bài viết nào. </p>
+                    {% else %}
+                    {% for blog in blogView %}
+                    <div class="p-4 lg:w-1/3 md:w-1/2">
+                       <div class="h-full flex flex-col items-center text-center">
+                          <img
+                             alt="team"
+                             class="flex-shrink-0 rounded-lg w-full h-56 object-cover object-center mb-4"
+                             src="{{blog.image.url}}" />
+                          <div class="w-full">
+                             <h2
+                                class="title-font font-medium text-lg text-gray-900 line-clamp-1">
+                                {{blog.title}}
+                             </h2>
+                             <h3 class="text-gray-500 mb-3">
+                                {{blog.userid.firstname}} {{blog.userid.lastname}}
+                             </h3>
+                             <span class="inline-flex">
+                                <a href="/blog/{{blog.id}}" class="text-indigo-500"
+                                   >Xem thêm</a
+                                >
+                             </span>
+                          </div>
+                       </div>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                 </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+{% endblock %}

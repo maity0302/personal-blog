@@ -1,0 +1,171 @@
+{% extends "pages/base.html" %} {% block title %}{{blog.title}}{%endblock%}
+{%load static %} {%block content %}
+<script src="{%static 'ckeditor/ckeditor.js'%}"></script>
+<section>
+   <div class="w-full text-left ml-28">
+      <nav aria-label="breadcrumb" class="block w-full">
+         <ol
+            class="flex w-full flex-wrap items-center rounded-md bg-blue-gray-50 bg-opacity-60 py-2 px-4">
+            <li
+               class="flex cursor-pointer items-center font-sans text-sm font-normal leading-normal text-blue-gray-900 antialiased transition-colors duration-300 hover:text-pink-500 hover:fill-pink-500">
+               <a class="opacity-60" href="{% url 'home' %}">
+                  <svg
+                     xmlns="http://www.w3.org/2000/svg"
+                     x="0px"
+                     y="0px"
+                     width="16"
+                     height="16"
+                     color="currentColor"
+                     viewBox="0 0 48 48">
+                     <path
+                        d="M 23.951172 4 A 1.50015 1.50015 0 0 0 23.072266 4.3222656 L 8.859375 15.519531 C 7.0554772 16.941163 6 19.113506 6 21.410156 L 6 40.5 C 6 41.863594 7.1364058 43 8.5 43 L 18.5 43 C 19.863594 43 21 41.863594 21 40.5 L 21 30.5 C 21 30.204955 21.204955 30 21.5 30 L 26.5 30 C 26.795045 30 27 30.204955 27 30.5 L 27 40.5 C 27 41.863594 28.136406 43 29.5 43 L 39.5 43 C 40.863594 43 42 41.863594 42 40.5 L 42 21.410156 C 42 19.113506 40.944523 16.941163 39.140625 15.519531 L 24.927734 4.3222656 A 1.50015 1.50015 0 0 0 23.951172 4 z M 24 7.4101562 L 37.285156 17.876953 C 38.369258 18.731322 39 20.030807 39 21.410156 L 39 40 L 30 40 L 30 30.5 C 30 28.585045 28.414955 27 26.5 27 L 21.5 27 C 19.585045 27 18 28.585045 18 30.5 L 18 40 L 9 40 L 9 21.410156 C 9 20.030807 9.6307412 18.731322 10.714844 17.876953 L 24 7.4101562 z"></path>
+                  </svg>
+               </a>
+               <span
+                  class="pointer-events-none mx-2 select-none font-sans text-sm font-normal leading-normal text-blue-gray-500 antialiased">
+                  /
+               </span>
+            </li>
+            <li
+               class="flex cursor-pointer items-center font-sans text-sm font-normal leading-normal text-blue-gray-900 antialiased transition-colors duration-300 hover:text-pink-500">
+               <a
+                  class="font-medium text-blue-gray-900 transition-colors hover:text-pink-500"
+                  href="{% url 'blog' blog.id %}">
+                  {{blog.title}}
+               </a>
+            </li>
+         </ol>
+      </nav>
+   </div>
+   <div>
+      <div class="w-full text-center">
+         <h1 class="text-4xl font-bold text-blue-gray-900">{{blog.title}}</h1>
+      </div>
+      <div class="w-full flex flex-col items-center">
+         <div class="flex justify-center w-full mt-16">
+            <form
+               method="POST"
+               enctype="multipart/form-data"
+               action="{% url 'edit' id=blog.id %}">
+               {% csrf_token %}
+               <div class="w-full">
+                  <label
+                     for="title"
+                     class="block text-sm font-medium text-gray-700">
+                     Tên bài viết
+                  </label>
+                  <div class="mt-1 w-full">
+                     <input
+                        id="title"
+                        name="title"
+                        autocomplete="title"
+                        required=""
+                        value="{{blog.title}}"
+                        class="w-full min-w-[500px] px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-1 focus:ring-pink-500 focus:border-pink-500 sm:text-sm" />
+                  </div>
+               </div>
+               <div class="w-full">
+                  <div class="mt-1 w-full">
+                     <label for="image">
+                        <div
+                           class="flex justify-center items-center w-full h-[300px] bg-gray-200 mt-2 rounded-lg cursor-pointer"
+                           id="imagePreview">
+                           <img
+                              src="{{blog.image.url}}"
+                              alt=""
+                              class="w-full h-full object-cover rounded-lg" />
+                        </div>
+                     </label>
+                     <input
+                        id="image"
+                        name="image"
+                        type="file"
+                        onchange="previewImage(event)"
+                        class="w-full hidden min-w-[500px] px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-1 focus:ring-pink-500 focus:border-pink-500 sm:text-sm" />
+                  </div>
+               </div>
+               <div class="w-full mt-2">
+                  <label
+                     for="content"
+                     class="block text-sm font-medium text-gray-700">
+                     Nội dung bài viết
+                  </label>
+                  <textarea id="editor" name="content">
+                    {{blog.content}}</textarea
+                  >
+               </div>
+               <div class="w-full mt-2">
+                  <label
+                     for="collection"
+                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                     >Chọn những chuyên mục</label
+                  >
+                  <select
+                     multiple
+                     id="collection"
+                     name="collection"
+                     size="5"
+                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                     {% for collection in collections %}
+                     <!-- prettier-ignore -->
+                     <option
+                        value="{{collection.id}}"
+                        class="ml-4 py-2 rounded-lg mt-1"
+                        {% if collection in blogCollections %}selected{% endif %}>
+                        {{collection.name}}
+                     </option>
+                     {% endfor %}
+                  </select>
+               </div>
+               <div class="w-full mt-2">
+                  {% for message in messages %}
+                  <p class="text-red-500">{{message}}</p>
+                  {% endfor %}
+               </div>
+               <button
+                  type="submit"
+                  disabled="true"
+                  class="middle mt-4 none center w-full rounded-lg bg-pink-500 py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-pink-500/20 transition-all hover:shadow-lg hover:shadow-pink-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                  data-ripple-light="true">
+                  Cập nhật bài viết
+               </button>
+            </form>
+         </div>
+      </div>
+   </div>
+</section>
+
+<script>
+   CKEDITOR.replace("editor");
+   function previewImage(event) {
+      var previewDiv = document.getElementById("imagePreview");
+      previewDiv.innerHTML = "";
+
+      var file = event.target.files[0];
+
+      var reader = new FileReader();
+      reader.onload = function (event) {
+         var image = new Image();
+         image.src = event.target.result;
+         image.className = "w-full h-full object-cover rounded-lg";
+         previewDiv.appendChild(image);
+      };
+      reader.readAsDataURL(file);
+   }
+
+   // Hàm xử lý disabled button khi không có thay đổi
+   document.addEventListener("DOMContentLoaded", function () {
+      var form = document.querySelector("form");
+      var submit = document.querySelector("button[type=submit]");
+      var editor = CKEDITOR.instances.editor;
+
+      form.addEventListener("input", function () {
+         submit.disabled = false;
+      });
+
+      editor.on("change", function () {
+         submit.disabled = false;
+      });
+   });
+</script>
+{%endblock%}

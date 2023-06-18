@@ -1,0 +1,66 @@
+{% extends "pages/base.html" %} {% load method_override %} {% block title %}
+Quản lý blog {% endblock %} {% block content %}
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg m-20">
+   <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+      <thead
+         class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+         <tr>
+            <th scope="col" class="px-6 py-3">Tên bài biết</th>
+            <th scope="col" class="px-6 py-3">Tác giả</th>
+            <th scope="col" class="px-6 py-3">Danh mục</th>
+            <th scope="col" class="px-6 py-3">Ngày tạo</th>
+            <th scope="col" class="px-6 py-3">Hành động</th>
+         </tr>
+      </thead>
+      <tbody>
+         {% for blog in blogs %}
+         <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
+            <th
+               scope="row"
+               class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+               {{ blog.title }}
+            </th>
+            <td class="px-6 py-4">
+               <a
+                  href="{% url 'profile' blog.userid.username %}"
+                  class="hover:text-blue-500"
+                  >{{ blog.userid.firstname }} {{ blog.userid.lastname }}</a
+               >
+            </td>
+            <td class="px-6 py-4">
+               {% for collection in blog.collectionId.all %}
+               <a
+                  href="{% url 'collection' collection.id %}"
+                  class="hover:text-white hover:bg-blue-500 border border-blue-100 p-2 rounded-lg"
+                  >{{ collection.name }}</a
+               >
+               {% endfor %}
+            </td>
+            <td class="px-6 py-4">{{ blog.createdat|date:'d-m-Y H:i:s' }}</td>
+            <td class="px-6 py-4 flex justify-start items-center gap-4">
+               <form action="{% url 'admin' %}" method="POST">
+                  {% csrf_token %} {% method_override 'PUT' %}
+                  <input type="hidden" name="id" value="{{ blog.id }}" />
+                  <button
+                     type="submit"
+                     class="hover:bg-green-200 border borer-gray-200 rounded-lg p-2 font-medium text-blue-600 dark:text-blue-500">
+                     Duyệt
+                  </button>
+               </form>
+               <form action="{% url 'admin' %}" method="POST">
+                  {% csrf_token %} {% method_override 'DELETE' %}
+                  <input type="hidden" name="id" value="{{ blog.id }}" />
+                  <button
+                     type="submit"
+                     class="hover:bg-red-500 hover:text-white border borer-gray-200 rounded-lg p-2 hover:text-red-600 font-medium text-blue-600 dark:text-blue-500">
+                     Xoá
+                  </button>
+               </form>
+            </td>
+         </tr>
+         {% endfor %}
+      </tbody>
+   </table>
+</div>
+
+{% endblock %}

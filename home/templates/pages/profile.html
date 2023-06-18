@@ -1,0 +1,236 @@
+{%extends "pages/base.html"%} {%block title%} Trang cá nhân của
+{{user.firstname}} {{user.lastname}} {%endblock%} {%block content%}
+<div class="container mx-auto flex flex-wrap py-6">
+   <section class="w-full md:w-2/3 flex flex-col items-center">
+      <div class="w-full text-left">
+         <nav aria-label="breadcrumb" class="block w-full">
+            <ol
+               class="flex w-full flex-wrap items-center rounded-md bg-blue-gray-50 bg-opacity-60 py-2 px-4">
+               <li
+                  class="flex cursor-pointer items-center font-sans text-sm font-normal leading-normal text-blue-gray-900 antialiased transition-colors duration-300 hover:text-pink-500 hover:fill-pink-500">
+                  <a class="opacity-60" href="{% url 'home' %}">
+                     <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        x="0px"
+                        y="0px"
+                        width="16"
+                        height="16"
+                        color="currentColor"
+                        viewBox="0 0 48 48">
+                        <path
+                           d="M 23.951172 4 A 1.50015 1.50015 0 0 0 23.072266 4.3222656 L 8.859375 15.519531 C 7.0554772 16.941163 6 19.113506 6 21.410156 L 6 40.5 C 6 41.863594 7.1364058 43 8.5 43 L 18.5 43 C 19.863594 43 21 41.863594 21 40.5 L 21 30.5 C 21 30.204955 21.204955 30 21.5 30 L 26.5 30 C 26.795045 30 27 30.204955 27 30.5 L 27 40.5 C 27 41.863594 28.136406 43 29.5 43 L 39.5 43 C 40.863594 43 42 41.863594 42 40.5 L 42 21.410156 C 42 19.113506 40.944523 16.941163 39.140625 15.519531 L 24.927734 4.3222656 A 1.50015 1.50015 0 0 0 23.951172 4 z M 24 7.4101562 L 37.285156 17.876953 C 38.369258 18.731322 39 20.030807 39 21.410156 L 39 40 L 30 40 L 30 30.5 C 30 28.585045 28.414955 27 26.5 27 L 21.5 27 C 19.585045 27 18 28.585045 18 30.5 L 18 40 L 9 40 L 9 21.410156 C 9 20.030807 9.6307412 18.731322 10.714844 17.876953 L 24 7.4101562 z"></path>
+                     </svg>
+                  </a>
+                  <span
+                     class="pointer-events-none mx-2 select-none font-sans text-sm font-normal leading-normal text-blue-gray-500 antialiased">
+                     /
+                  </span>
+               </li>
+               <li
+                  class="flex cursor-pointer items-center font-sans text-sm font-normal leading-normal text-blue-gray-900 antialiased transition-colors duration-300 hover:text-pink-500">
+                  <a
+                     class="font-medium text-blue-gray-900 transition-colors hover:text-pink-500"
+                     href="{% url 'profile' user.username %}">
+                     @{{user.username}}
+                  </a>
+               </li>
+            </ol>
+         </nav>
+      </div>
+      <div class="bg-white py-6 sm:py-8 lg:py-12 w-full">
+         {% if not blogs %}
+         <p class="text-center">Không có bài viết nào.</p>
+         {% else %}
+         <div class="mx-auto max-w-screen-2xl md:px-8">
+            <!-- text - start -->
+            <div class="mb-10 md:mb-16">
+               <h2
+                  class="mb-4 text-center text-2xl font-bold text-gray-800 md:mb-6 lg:text-3xl">
+                  Blog của {{user.firstname}} {{user.lastname}}
+               </h2>
+            </div>
+            <!-- text - end -->
+
+            <div
+               class="grid gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-2 xl:grid-cols-2 xl:gap-4">
+               {% for blog in blogs %}
+               <!-- article - start -->
+               <a
+                  href="/blog/{{blog.id}}"
+                  class="group relative flex h-48 flex-col overflow-hidden rounded-lg bg-gray-100 shadow-lg md:h-64 xl:h-96">
+                  <img
+                     src="{{blog.image.url}}"
+                     loading="lazy"
+                     alt="{{blog.title}}"
+                     class="absolute inset-0 h-full w-full object-cover object-center transition duration-200 group-hover:scale-110" />
+
+                  <div
+                     class="pointer-events-none absolute inset-0 bg-gradient-to-t from-gray-800 to-transparent md:via-transparent"></div>
+
+                  <div class="relative mt-auto p-4">
+                     <span class="block text-sm text-gray-200"
+                        >{{blog.createdat|date:"d-m-Y" }}</span
+                     >
+                     <h2
+                        class="mb-2 text-xl font-semibold text-white transition duration-100 line-clamp-1">
+                        {{blog.title}}
+                     </h2>
+
+                     <span class="font-semibold text-indigo-300">Đọc ngay</span>
+                  </div>
+               </a>
+               <!-- article - end -->
+               {% endfor %}
+            </div>
+         </div>
+         {% endif %}
+      </div>
+   </section>
+
+   <aside class="w-full md:w-1/3 flex flex-col items-center px-3">
+      <div class="w-full bg-white shadow flex flex-col my-4 p-6">
+         <div class="text-center">
+            <img
+               src="{{user.avatar.url}}"
+               class="mx-auto mb-4 w-24 h-24 rounded-full object-cover object-center"
+               alt="Avatar" />
+            <h5 class="text-xl font-medium leading-tight">
+               {{user.firstname}} {{user.lastname}}
+            </h5>
+
+            <p class="text-neutral-500 dark:text-neutral-400">
+               @{{user.username}}
+            </p>
+            <div class="border-t border-blueGray-200 mt-2">
+               <div class="flex justify-center py-1 lg:pt-1 pt-8">
+                  <div class="mr-4 p-3 text-center">
+                     <span
+                        class="text-xl font-bold block uppercase tracking-wide text-blueGray-600">
+                        {{blogs|length}}
+                     </span>
+                     <span class="text-sm text-blueGray-400">Bài viết</span>
+                  </div>
+                  <div class="mr-4 p-3 text-center">
+                     <span
+                        class="text-xl font-bold block uppercase tracking-wide text-blueGray-600">
+                        {{reactionCount}}
+                     </span>
+                     <span class="text-sm text-blueGray-400">Cảm xúc</span>
+                  </div>
+                  <div class="lg:mr-4 p-3 text-center">
+                     <span
+                        class="text-xl font-bold block uppercase tracking-wide text-blueGray-600">
+                        {{commentCount}}
+                     </span>
+                     <span class="text-sm text-blueGray-400">Bình luân</span>
+                  </div>
+               </div>
+            </div>
+            <div
+               class="border-t border-blueGray-200 text-center flex justify-center">
+               <div class="flex flex-col justify-center items-start">
+                  <div class="flex items-center mt-2">
+                     <i class="mr-2 flex">
+                        <svg
+                           xmlns="http://www.w3.org/2000/svg"
+                           x="0px"
+                           y="0px"
+                           width="27"
+                           height="27"
+                           viewBox="0 0 48 48">
+                           <path
+                              d="M 10.5 8 C 6.9280619 8 4 10.928062 4 14.5 L 4 33.5 C 4 37.071938 6.9280619 40 10.5 40 L 37.5 40 C 41.071938 40 44 37.071938 44 33.5 L 44 14.5 C 44 10.928062 41.071938 8 37.5 8 L 10.5 8 z M 10.5 11 L 37.5 11 C 39.450062 11 41 12.549938 41 14.5 L 41 15.605469 L 24 24.794922 L 7 15.605469 L 7 14.5 C 7 12.549938 8.5499381 11 10.5 11 z M 7 19.015625 L 23.287109 27.820312 A 1.50015 1.50015 0 0 0 24.712891 27.820312 L 41 19.015625 L 41 33.5 C 41 35.450062 39.450062 37 37.5 37 L 10.5 37 C 8.5499381 37 7 35.450062 7 33.5 L 7 19.015625 z"></path>
+                        </svg>
+                     </i>
+                     {{user.email}}
+                  </div>
+                  <div class="flex items-center mt-2">
+                     <i class="mr-2 flex">
+                        <svg
+                           xmlns="http://www.w3.org/2000/svg"
+                           x="0px"
+                           y="0px"
+                           width="26"
+                           height="26"
+                           viewBox="0 0 48 48">
+                           <path
+                              d="M 13 1.859375 C 12.80775 1.859375 12.616234 1.9465469 12.490234 2.1230469 C 11.633234 3.3250469 10 5.778 10 7 C 10 8.657 11.343 10 13 10 C 14.657 10 16 8.657 16 7 C 16 5.778 14.367719 3.3250469 13.511719 2.1230469 C 13.385719 1.9465469 13.19225 1.859375 13 1.859375 z M 13 10 L 11.5 10 C 10.136406 10 9 11.136406 9 12.5 L 9 18.039062 C 7.2014064 19.199096 6 21.214942 6 23.5 L 6 25.177734 A 1.50015 1.50015 0 0 0 6 25.712891 L 6 35.5 C 6 39.071938 8.9280619 42 12.5 42 L 35.5 42 C 39.071938 42 42 39.071938 42 35.5 L 42 25.714844 A 1.50015 1.50015 0 0 0 42 25.175781 L 42 23.5 C 42 21.214942 40.798594 19.199096 39 18.039062 L 39 12.5 C 39 11.136406 37.863594 10 36.5 10 L 35 10 L 33.5 10 C 32.136406 10 31 11.136406 31 12.5 L 31 17 L 28 17 L 28 12.5 C 28 11.136406 26.863594 10 25.5 10 L 24 10 L 22.5 10 C 21.136406 10 20 11.136406 20 12.5 L 20 17 L 17 17 L 17 12.5 C 17 11.136406 15.863594 10 14.5 10 L 13 10 z M 24 10 C 25.657 10 27 8.657 27 7 C 27 5.778 25.367719 3.3250469 24.511719 2.1230469 C 24.259719 1.7700469 23.742234 1.7700469 23.490234 2.1230469 C 22.633234 3.3250469 21 5.778 21 7 C 21 8.657 22.343 10 24 10 z M 35 10 C 36.657 10 38 8.657 38 7 C 38 5.778 36.367719 3.3250469 35.511719 2.1230469 C 35.259719 1.7700469 34.742234 1.7700469 34.490234 2.1230469 C 33.633234 3.3250469 32 5.778 32 7 C 32 8.657 33.343 10 35 10 z M 12 13 L 14 13 L 14 17 L 12.5 17 C 12.331408 17 12.165483 17.012585 12 17.025391 L 12 13 z M 23 13 L 25 13 L 25 17 L 23 17 L 23 13 z M 34 13 L 36 13 L 36 17.025391 C 35.834517 17.012585 35.668592 17 35.5 17 L 34 17 L 34 13 z M 12.5 20 L 15.253906 20 A 1.50015 1.50015 0 0 0 15.740234 20 L 21.253906 20 A 1.50015 1.50015 0 0 0 21.740234 20 L 26.253906 20 A 1.50015 1.50015 0 0 0 26.740234 20 L 32.253906 20 A 1.50015 1.50015 0 0 0 32.740234 20 L 35.5 20 C 37.450062 20 39 21.549938 39 23.5 L 39 25.138672 C 38.700459 25.677995 37.749376 27 35.5 27 C 32.776632 27 31.952142 25.046969 31.90625 24.935547 A 1.50015 1.50015 0 0 0 30.724609 23.998047 A 1.50015 1.50015 0 0 0 30.628906 23.988281 A 1.50015 1.50015 0 0 0 30.542969 23.982422 A 1.50015 1.50015 0 0 0 30.392578 23.986328 A 1.50015 1.50015 0 0 0 29.169922 24.775391 C 29.150512 24.809111 28.923403 25.216716 28.138672 25.785156 C 27.322404 26.376521 26.040501 27 24 27 C 21.959499 27 20.677596 26.37644 19.861328 25.785156 C 19.078098 25.217804 18.852346 24.812579 18.832031 24.777344 A 1.50015 1.50015 0 0 0 17.568359 23.982422 A 1.50015 1.50015 0 0 0 17.5625 23.982422 A 1.50015 1.50015 0 0 0 17.560547 23.982422 A 1.50015 1.50015 0 0 0 17.529297 23.980469 A 1.50015 1.50015 0 0 0 17.4375 23.984375 A 1.50015 1.50015 0 0 0 17.412109 23.984375 A 1.50015 1.50015 0 0 0 17.400391 23.986328 A 1.50015 1.50015 0 0 0 17.351562 23.990234 A 1.50015 1.50015 0 0 0 17.230469 24.005859 A 1.50015 1.50015 0 0 0 16.09375 24.9375 C 16.046869 25.051207 15.221675 27 12.5 27 C 10.250624 27 9.2995412 25.677995 9 25.138672 L 9 23.5 C 9 21.549938 10.549938 20 12.5 20 z M 17.621094 27.71875 C 17.859858 27.947547 17.782516 27.983733 18.101562 28.214844 C 19.356046 29.12356 21.323501 30 24 30 C 26.676499 30 28.643955 29.12356 29.898438 28.214844 C 30.217485 27.983733 30.140142 27.947547 30.378906 27.71875 C 31.366928 28.8237 32.877762 30 35.5 30 C 36.919101 30 38.077078 29.606487 39 29.070312 L 39 35.5 C 39 37.450062 37.450062 39 35.5 39 L 12.5 39 C 10.549938 39 9 37.450062 9 35.5 L 9 29.070312 C 9.922922 29.606487 11.080899 30 12.5 30 C 15.122238 30 16.633072 28.8237 17.621094 27.71875 z"></path>
+                        </svg>
+                     </i>
+                     {% if user.birthday %} {{user.birthday}} {% else %} Chưa
+                     cập nhật {% endif %}
+                  </div>
+                  <div class="flex items-center mt-2">
+                     <i class="mr-2 flex">
+                        <svg
+                           xmlns="http://www.w3.org/2000/svg"
+                           x="0px"
+                           y="0px"
+                           width="26"
+                           height="26"
+                           viewBox="0 0 48 48">
+                           <path
+                              d="M 11.5 0 C 5.1664891 0 0 5.1664939 0 11.5 C 0 17.833506 5.1664891 23 11.5 23 C 17.833511 23 23 17.833506 23 11.5 C 23 5.1664939 17.833511 0 11.5 0 z M 11.5 3 C 16.212192 3 20 6.7878114 20 11.5 C 20 16.212189 16.212192 20 11.5 20 C 6.7878084 20 3 16.212189 3 11.5 C 3 6.7878114 6.7878084 3 11.5 3 z M 11.476562 4.9785156 A 1.50015 1.50015 0 0 0 10 6.5 L 10 11.5 A 1.50015 1.50015 0 0 0 10.439453 12.560547 L 12.439453 14.560547 A 1.50015 1.50015 0 1 0 14.560547 12.439453 L 13 10.878906 L 13 6.5 A 1.50015 1.50015 0 0 0 11.476562 4.9785156 z M 23.820312 6 C 24.244312 6.948 24.563766 7.952 24.759766 9 L 35.5 9 C 37.43 9 39 10.57 39 12.5 L 39 14 L 24.759766 14 C 24.562766 15.048 24.243313 16.052 23.820312 17 L 39 17 L 39 35.5 C 39 37.43 37.43 39 35.5 39 L 12.5 39 C 10.57 39 9 37.43 9 35.5 L 9 24.759766 C 7.952 24.562766 6.948 24.243313 6 23.820312 L 6 35.5 C 6 39.084 8.916 42 12.5 42 L 35.5 42 C 39.084 42 42 39.084 42 35.5 L 42 12.5 C 42 8.916 39.084 6 35.5 6 L 23.820312 6 z M 24 21 A 2.5 2.5 0 0 0 24 26 A 2.5 2.5 0 0 0 24 21 z M 32.5 21 A 2.5 2.5 0 0 0 32.5 26 A 2.5 2.5 0 0 0 32.5 21 z M 15.5 30 A 2.5 2.5 0 0 0 15.5 35 A 2.5 2.5 0 0 0 15.5 30 z M 24 30 A 2.5 2.5 0 0 0 24 35 A 2.5 2.5 0 0 0 24 30 z"></path>
+                        </svg>
+                     </i>
+                     {{user.createdat|date:'d-m-Y'}}
+                  </div>
+                  <div class="flex items-center mt-2">
+                     <i class="mr-2 flex">
+                        <svg
+                           xmlns="http://www.w3.org/2000/svg"
+                           x="0px"
+                           y="0px"
+                           width="26"
+                           height="26"
+                           viewBox="0 0 48 48">
+                           <path
+                              d="M 37.5 1 A 1.50015 1.50015 0 1 0 37.5 4 L 41.779297 4 L 35.888672 9.8886719 A 1.50015 1.50015 0 0 0 35.789062 9.9941406 C 33.76476 8.4372143 31.24139 7.5 28.5 7.5 C 22.882356 7.5 18.158607 11.398279 16.863281 16.625 C 11.024831 17.428813 6.5 22.44656 6.5 28.5 C 6.5 31.49475 7.6142655 34.231721 9.4394531 36.337891 L 7.046875 38.730469 L 4.6582031 36.341797 A 1.50015 1.50015 0 1 0 2.5371094 38.462891 L 4.9257812 40.851562 L 1.8886719 43.888672 A 1.50015 1.50015 0 1 0 4.0097656 46.009766 L 7.046875 42.972656 L 9.4375 45.363281 A 1.50015 1.50015 0 1 0 11.558594 43.242188 L 9.1679688 40.851562 L 11.671875 38.349609 C 13.613091 39.70061 15.964463 40.5 18.5 40.5 C 24.117644 40.5 28.841393 36.601721 30.136719 31.375 C 35.975169 30.571187 40.5 25.55344 40.5 19.5 C 40.5 16.707149 39.530053 14.138495 37.919922 12.095703 A 1.50015 1.50015 0 0 0 38.009766 12.009766 L 44 6.0214844 L 44 10.5 A 1.50015 1.50015 0 1 0 47 10.5 L 47 2.5 A 1.50015 1.50015 0 0 0 45.5 1 L 37.5 1 z M 28.5 10.5 C 33.488334 10.5 37.5 14.511669 37.5 19.5 C 37.5 23.803594 34.511216 27.374561 30.488281 28.275391 C 30.375995 22.269492 25.821421 17.326776 19.980469 16.601562 C 21.181772 13.046745 24.527981 10.5 28.5 10.5 z M 19.503906 19.558594 C 23.996309 20.052489 27.466601 23.819763 27.496094 28.441406 C 23.003691 27.947511 19.533399 24.180237 19.503906 19.558594 z M 16.511719 19.724609 C 16.624005 25.730508 21.178579 30.673224 27.019531 31.398438 C 25.818228 34.953255 22.472019 37.5 18.5 37.5 C 13.511666 37.5 9.5 33.488331 9.5 28.5 C 9.5 24.196406 12.488784 20.625439 16.511719 19.724609 z"></path>
+                        </svg>
+                     </i>
+                     {{user.get_gender_display }}
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="w-full bg-white shadow flex flex-col my-4 p-6">
+         <p class="text-xl font-semibold pb-5">Hình ảnh Facebook</p>
+         <div class="grid grid-cols-3 gap-3">
+            <img
+               class="hover:opacity-75"
+               src="https://source.unsplash.com/collection/1346951/150x150?sig=1" />
+            <img
+               class="hover:opacity-75"
+               src="https://source.unsplash.com/collection/1346951/150x150?sig=2" />
+            <img
+               class="hover:opacity-75"
+               src="https://source.unsplash.com/collection/1346951/150x150?sig=3" />
+            <img
+               class="hover:opacity-75"
+               src="https://source.unsplash.com/collection/1346951/150x150?sig=4" />
+            <img
+               class="hover:opacity-75"
+               src="https://source.unsplash.com/collection/1346951/150x150?sig=5" />
+            <img
+               class="hover:opacity-75"
+               src="https://source.unsplash.com/collection/1346951/150x150?sig=6" />
+            <img
+               class="hover:opacity-75"
+               src="https://source.unsplash.com/collection/1346951/150x150?sig=7" />
+            <img
+               class="hover:opacity-75"
+               src="https://source.unsplash.com/collection/1346951/150x150?sig=8" />
+            <img
+               class="hover:opacity-75"
+               src="https://source.unsplash.com/collection/1346951/150x150?sig=9" />
+         </div>
+         <a
+            href="https://www.facebook.com/snyano/"
+            class="w-full bg-blue-800 text-white font-bold text-sm uppercase rounded hover:bg-blue-700 flex items-center justify-center px-2 py-3 mt-6">
+            <i class="fab fa-instagram mr-2"></i> Follow @snyano
+         </a>
+      </div>
+   </aside>
+</div>
+{%endblock%}

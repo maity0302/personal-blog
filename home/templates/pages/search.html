@@ -1,0 +1,114 @@
+{% extends "pages/base.html" %} {% block title %}Tìm kiếm blog{%endblock%}
+{%block content %}
+<section>
+   <div class="flex ml-28">
+      <div class="w-full text-left">
+         <nav aria-label="breadcrumb" class="block w-full">
+            <ol
+               class="flex w-full flex-wrap items-center rounded-md bg-blue-gray-50 bg-opacity-60 py-2 px-4">
+               <li
+                  class="flex cursor-pointer items-center font-sans text-sm font-normal leading-normal text-blue-gray-900 antialiased transition-colors duration-300 hover:text-pink-500 hover:fill-pink-500">
+                  <a class="opacity-60" href="{% url 'home' %}">
+                     <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        x="0px"
+                        y="0px"
+                        width="16"
+                        height="16"
+                        color="currentColor"
+                        viewBox="0 0 48 48">
+                        <path
+                           d="M 23.951172 4 A 1.50015 1.50015 0 0 0 23.072266 4.3222656 L 8.859375 15.519531 C 7.0554772 16.941163 6 19.113506 6 21.410156 L 6 40.5 C 6 41.863594 7.1364058 43 8.5 43 L 18.5 43 C 19.863594 43 21 41.863594 21 40.5 L 21 30.5 C 21 30.204955 21.204955 30 21.5 30 L 26.5 30 C 26.795045 30 27 30.204955 27 30.5 L 27 40.5 C 27 41.863594 28.136406 43 29.5 43 L 39.5 43 C 40.863594 43 42 41.863594 42 40.5 L 42 21.410156 C 42 19.113506 40.944523 16.941163 39.140625 15.519531 L 24.927734 4.3222656 A 1.50015 1.50015 0 0 0 23.951172 4 z M 24 7.4101562 L 37.285156 17.876953 C 38.369258 18.731322 39 20.030807 39 21.410156 L 39 40 L 30 40 L 30 30.5 C 30 28.585045 28.414955 27 26.5 27 L 21.5 27 C 19.585045 27 18 28.585045 18 30.5 L 18 40 L 9 40 L 9 21.410156 C 9 20.030807 9.6307412 18.731322 10.714844 17.876953 L 24 7.4101562 z"></path>
+                     </svg>
+                  </a>
+                  <span
+                     class="pointer-events-none mx-2 select-none font-sans text-sm font-normal leading-normal text-blue-gray-500 antialiased">
+                     /
+                  </span>
+               </li>
+               <li
+                  class="flex cursor-pointer items-center font-sans text-sm font-normal leading-normal text-blue-gray-900 antialiased transition-colors duration-300 hover:text-pink-500">
+                  <a
+                     class="font-medium text-blue-gray-900 transition-colors hover:text-pink-500"
+                     href="{% url 'search' %}">
+                     Search
+                  </a>
+               </li>
+            </ol>
+         </nav>
+      </div>
+   </div>
+   <div class="flex justify-center">
+      <div class="min-w-full lg:min-w-[30rem] my-28">
+         <form method="get" action="{% url 'search' %}">
+            <input
+               name="q"
+               id="search"
+               placeholder="Tìm kiếm bài viết, @ để tìm kiếm người dùng"
+               class="w-full bg-white h-10 px-5 rounded-lg text-sm ring-1 outline-none"
+               value="{{ query }}" />
+            <button
+               type="submit"
+               class="hidden ml-4 px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-700">
+               Tìm kiếm
+            </button>
+         </form>
+      </div>
+   </div>
+   <div
+      class="relative items-center w-full px-5 py-12 mx-auto md:px-12 lg:px-24 max-w-7xl">
+      {%if not query%}
+      <p class="text-gray-500 text-center">Nhập từ khóa để tìm kiếm.</p>
+      {%else%} {% if results %}
+      <div class="grid w-full grid-cols-1 gap-6 mx-auto lg:grid-cols-3">
+         {% for result in results %} {% if not result.username %}
+         <a href="{% url 'blog' result.id %}">
+            <div class="p-6">
+               <img
+                  class="object-cover object-center w-full mb-8 lg:h-48 md:h-36 rounded-xl"
+                  src="{{ result.image }}"
+                  alt="{{ result.title }}" />
+               <div class="inline-flex justify-between w-full">
+                  <h1
+                     class="mb-8 text-xl font-semibold leading-none tracking-tighter text-neutral-600 line-clamp-1">
+                     {{ result.title }}
+                  </h1>
+               </div>
+               <p
+                  class="mx-auto text-base font-medium leading-relaxed text-gray-500 line-clamp-3">
+                  {{ result.content|safe|truncatewords:30 }}
+               </p>
+            </div>
+         </a>
+         {% else %}
+         <a href="{% url 'profile' result.username %}">
+            <div
+               class="h-full flex items-center border-gray-200 border p-4 rounded-lg">
+               <img
+                  alt="team"
+                  class="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4"
+                  src="{{result.avatar.url}}" />
+               <div class="flex-grow">
+                  <h2 class="text-gray-900 title-font font-medium">
+                     {{ result.firstname}} {{ result.lastname}}
+                     <span class="italic text-slate-400"
+                        ><{{ result.blogs.count }}></span
+                     >
+                  </h2>
+                  <p class="text-gray-500">
+                     Ngày tham gia: {{result.createdat|date:"d-m-Y" }}
+                  </p>
+               </div>
+            </div>
+         </a>
+         {% endif %} {% endfor %}
+      </div>
+      {% else %}
+      <p class="text-gray-500 text-center">
+         Không tìm thấy kết quả cho "{{ query }}".
+      </p>
+      {% endif %} {%endif%}
+   </div>
+</section>
+
+{%endblock%}

@@ -1,0 +1,760 @@
+{% extends "pages/base.html" %} {% block title %} {{blog.title}} {%endblock%}
+{%load method_override%} {%block content %}
+<div class="container mx-auto flex flex-wrap py-6">
+   <section class="w-full md:w-2/3 flex flex-col items-center px-3">
+      <div class="flex justify-center">
+         <div class="flex flex-col justify-center">
+            {% comment %} Chỉ mục {% endcomment %}
+            <div class="w-full text-left">
+               <nav aria-label="breadcrumb" class="block w-full">
+                  <ol
+                     class="flex w-full flex-wrap items-center rounded-md bg-blue-gray-50 bg-opacity-60 py-2 px-4">
+                     <li
+                        class="flex cursor-pointer items-center font-sans text-sm font-normal leading-normal text-blue-gray-900 antialiased transition-colors duration-300 hover:text-pink-500 hover:fill-pink-500">
+                        <a class="opacity-60" href="{% url 'home' %}">
+                           <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              x="0px"
+                              y="0px"
+                              width="16"
+                              height="16"
+                              color="currentColor"
+                              viewBox="0 0 48 48">
+                              <path
+                                 d="M 23.951172 4 A 1.50015 1.50015 0 0 0 23.072266 4.3222656 L 8.859375 15.519531 C 7.0554772 16.941163 6 19.113506 6 21.410156 L 6 40.5 C 6 41.863594 7.1364058 43 8.5 43 L 18.5 43 C 19.863594 43 21 41.863594 21 40.5 L 21 30.5 C 21 30.204955 21.204955 30 21.5 30 L 26.5 30 C 26.795045 30 27 30.204955 27 30.5 L 27 40.5 C 27 41.863594 28.136406 43 29.5 43 L 39.5 43 C 40.863594 43 42 41.863594 42 40.5 L 42 21.410156 C 42 19.113506 40.944523 16.941163 39.140625 15.519531 L 24.927734 4.3222656 A 1.50015 1.50015 0 0 0 23.951172 4 z M 24 7.4101562 L 37.285156 17.876953 C 38.369258 18.731322 39 20.030807 39 21.410156 L 39 40 L 30 40 L 30 30.5 C 30 28.585045 28.414955 27 26.5 27 L 21.5 27 C 19.585045 27 18 28.585045 18 30.5 L 18 40 L 9 40 L 9 21.410156 C 9 20.030807 9.6307412 18.731322 10.714844 17.876953 L 24 7.4101562 z"></path>
+                           </svg>
+                        </a>
+                        <span
+                           class="pointer-events-none mx-2 select-none font-sans text-sm font-normal leading-normal text-blue-gray-500 antialiased">
+                           /
+                        </span>
+                     </li>
+                     <li
+                        class="flex cursor-pointer items-center font-sans text-sm font-normal leading-normal text-blue-gray-900 antialiased transition-colors duration-300 hover:text-pink-500">
+                        <a class="opacity-60" href="{% url 'blogs' %}">
+                           <span>Blog</span>
+                        </a>
+                        <span
+                           class="pointer-events-none mx-2 select-none font-sans text-sm font-normal leading-normal text-blue-gray-500 antialiased">
+                           /
+                        </span>
+                     </li>
+                     <li
+                        class="flex cursor-pointer items-center font-sans text-sm font-normal leading-normal text-blue-gray-900 antialiased transition-colors duration-300 hover:text-pink-500">
+                        <a
+                           class="font-medium text-blue-gray-900 transition-colors hover:text-pink-500"
+                           href="{% url 'blog' blog.id %}">
+                           {{blog.title}}
+                        </a>
+                     </li>
+                  </ol>
+               </nav>
+            </div>
+            <div
+               class="flex flex-col max-w-7xl justify-center items-center p-2 mt-10">
+               <div
+                  class="flex flex-col w-[90%] md:w-3/4 text-center items-center justify-center space-y-3">
+                  <div class="text-5xl font-bold">{{blog.title}}</div>
+                  <div
+                     class="text-xl font-semibold text-gray-400 flex justify-center items-center">
+                     <a
+                        href="{% url 'profile' blog.userid %}"
+                        class="flex items-center justify-centr text-center">
+                        <img
+                           src="{{blog.userid.avatar.url}}"
+                           class="h-8 w-8 rounded-full border border-gray-300 mr-1"
+                           alt="{{blog.title}}" />
+                        {{blog.userid.firstname}} {{blog.userid.lastname}}
+                     </a>
+                     <span class="mx-2">|</span> {{blogreadtime}} phút đọc
+                  </div>
+               </div>
+               <div class="w-3/4 h-60 md:h-96 my-4 rounded-lg overflow-hidden">
+                  <img
+                     src="{{blog.image.url}}"
+                     class="h-full w-full"
+                     alt="{{blog.title}}" />
+               </div>
+               <div id="content">
+                  <p
+                     class="text-xl font-light leading-relaxed mt-6 mb-4 text-gray-800">
+                     {{blog.content|safe|linebreaks}}
+                  </p>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+   <aside class="w-full md:w-1/3 flex flex-col items-center px-3">
+      <div class="w-full bg-white shadow flex flex-col my-4 p-6 select-none">
+         <p class="text-xl font-semibold pb-5 text-center">Thông tin</p>
+         <div
+            class="border-t border-blueGray-200 text-center flex justify-center">
+            <div class="flex flex-col justify-center items-start">
+               <div class="flex items-center mt-2">
+                  <i class="mr-2 flex">
+                     <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        x="0px"
+                        y="0px"
+                        width="27"
+                        height="27"
+                        viewBox="0 0 48 48">
+                        <path
+                           d="M 24 4 C 18.494917 4 14 8.494921 14 14 C 14 19.505079 18.494917 24 24 24 C 29.505083 24 34 19.505079 34 14 C 34 8.494921 29.505083 4 24 4 z M 24 7 C 27.883764 7 31 10.116238 31 14 C 31 17.883762 27.883764 21 24 21 C 20.116236 21 17 17.883762 17 14 C 17 10.116238 20.116236 7 24 7 z M 12.5 28 C 10.032499 28 8 30.032499 8 32.5 L 8 33.699219 C 8 36.640082 9.8647133 39.277974 12.708984 41.091797 C 15.553256 42.90562 19.444841 44 24 44 C 28.555159 44 32.446744 42.90562 35.291016 41.091797 C 38.135287 39.277974 40 36.640082 40 33.699219 L 40 32.5 C 40 30.032499 37.967501 28 35.5 28 L 12.5 28 z M 12.5 31 L 35.5 31 C 36.346499 31 37 31.653501 37 32.5 L 37 33.699219 C 37 35.364355 35.927463 37.127823 33.677734 38.5625 C 31.428006 39.997177 28.068841 41 24 41 C 19.931159 41 16.571994 39.997177 14.322266 38.5625 C 12.072537 37.127823 11 35.364355 11 33.699219 L 11 32.5 C 11 31.653501 11.653501 31 12.5 31 z"></path>
+                     </svg>
+                  </i>
+                  <a
+                     href="{% url 'profile' blog.userid.username %}"
+                     class="hover:text-blue-400">
+                     {{blog.userid.firstname}} {{blog.userid.lastname }}
+                  </a>
+               </div>
+               <div class="flex items-center mt-2">
+                  <i class="mr-2 flex">
+                     <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        x="0px"
+                        y="0px"
+                        width="27"
+                        height="27"
+                        viewBox="0 0 48 48">
+                        <path
+                           d="M 10.5 8 C 6.9280619 8 4 10.928062 4 14.5 L 4 33.5 C 4 37.071938 6.9280619 40 10.5 40 L 37.5 40 C 41.071938 40 44 37.071938 44 33.5 L 44 14.5 C 44 10.928062 41.071938 8 37.5 8 L 10.5 8 z M 10.5 11 L 37.5 11 C 39.450062 11 41 12.549938 41 14.5 L 41 15.605469 L 24 24.794922 L 7 15.605469 L 7 14.5 C 7 12.549938 8.5499381 11 10.5 11 z M 7 19.015625 L 23.287109 27.820312 A 1.50015 1.50015 0 0 0 24.712891 27.820312 L 41 19.015625 L 41 33.5 C 41 35.450062 39.450062 37 37.5 37 L 10.5 37 C 8.5499381 37 7 35.450062 7 33.5 L 7 19.015625 z"></path>
+                     </svg>
+                  </i>
+                  {{blog.userid.email}}
+               </div>
+               <div class="flex items-center mt-2">
+                  <i class="mr-2 flex">
+                     <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        x="0px"
+                        y="0px"
+                        width="27"
+                        height="27"
+                        viewBox="0 0 48 48">
+                        <path
+                           d="M 13.5 4 C 10.480226 4 8 6.4802259 8 9.5 L 8 36 L 8 37.5 L 8 38.5 C 8 41.519774 10.480226 44 13.5 44 L 39.5 44 A 1.50015 1.50015 0 1 0 39.5 41 L 13.5 41 C 12.273237 41 11.277238 40.152347 11.050781 39 L 39.5 39 A 1.50015 1.50015 0 0 0 41 37.5 L 41 9.5 C 41 6.4802259 38.519774 4 35.5 4 L 13.5 4 z M 13.5 7 L 35.5 7 C 36.898226 7 38 8.1017741 38 9.5 L 38 36 L 11 36 L 11 9.5 C 11 8.1017741 12.101774 7 13.5 7 z M 16.5 16 A 1.50015 1.50015 0 1 0 16.5 19 L 32.5 19 A 1.50015 1.50015 0 1 0 32.5 16 L 16.5 16 z M 16.5 23 A 1.50015 1.50015 0 1 0 16.5 26 L 29.5 26 A 1.50015 1.50015 0 1 0 29.5 23 L 16.5 23 z"></path>
+                     </svg>
+                  </i>
+                  {{blogreadtime}} phút
+               </div>
+
+               <div class="flex items-center mt-2">
+                  <i class="mr-2 flex">
+                     <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        x="0px"
+                        y="0px"
+                        width="27"
+                        height="27"
+                        viewBox="0 0 48 48">
+                        <path
+                           d="M 23.986328 9 C 12.666705 9 2.6928719 16.845918 0.046875 27.126953 A 1.5002454 1.5002454 0 0 0 2.953125 27.873047 C 5.2331281 19.014082 14.065951 12 23.986328 12 C 33.906705 12 42.767507 19.01655 45.046875 27.873047 A 1.5002454 1.5002454 0 0 0 47.953125 27.126953 C 45.306493 16.84345 35.305951 9 23.986328 9 z M 24.001953 17 C 18.681885 17 14.337891 21.343999 14.337891 26.664062 C 14.337891 31.984127 18.681885 36.330078 24.001953 36.330078 C 29.322021 36.330078 33.667969 31.984126 33.667969 26.664062 C 33.667969 21.343999 29.322021 17 24.001953 17 z M 24.001953 20 C 27.700702 20 30.667969 22.965317 30.667969 26.664062 C 30.667969 30.36281 27.700702 33.330078 24.001953 33.330078 C 20.303205 33.330078 17.337891 30.362809 17.337891 26.664062 C 17.337891 22.965317 20.303205 20 24.001953 20 z"></path>
+                     </svg>
+                  </i>
+                  {{blog.view}} lượt xem
+               </div>
+
+               <div class="flex items-center mt-2">
+                  <i class="mr-2 flex">
+                     <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        x="0px"
+                        y="0px"
+                        width="27"
+                        height="27"
+                        viewBox="0 0 48 48">
+                        <path
+                           d="M 33.548828 3.9785156 A 2.0002 2.0002 0 0 0 32.019531 4.6875 L 31.603516 5.1640625 C 31.270313 5.0802684 30.929559 5.0315071 30.587891 5.0234375 C 29.294006 4.9928785 27.993707 5.5035315 27.087891 6.5449219 L 21.033203 13.5 L 13.669922 15.599609 C 12.344332 15.977263 11.156946 16.732822 10.251953 17.773438 L 3.234375 25.837891 C 1.5706009 27.749681 1.6165433 30.772472 3.6464844 32.455078 C 3.8225382 32.60096 4.0117693 32.72254 4.203125 32.837891 L 3.9316406 33.148438 A 1.50015 1.50015 0 0 0 3.9316406 33.150391 C 3.5373809 33.603917 3.263514 34.151529 3.1425781 34.742188 L 3.1445312 34.742188 L 2.03125 40.150391 A 1.50015 1.50015 0 0 0 3.9902344 41.869141 L 9.2265625 40.0625 C 9.8062777 39.86284 10.324514 39.514217 10.726562 39.052734 L 14.138672 35.132812 C 14.634258 35.748055 15.262413 36.266654 16.03125 36.595703 L 15.951172 36.558594 L 21.96875 39.566406 L 21.992188 39.578125 C 22.010517 39.586525 22.148687 39.661155 22.339844 39.765625 C 23.650695 40.483566 26.448753 42 30.5 42 C 33.543618 42 35.157335 41.418183 36.701172 40.929688 C 38.988947 40.206868 39.758042 40 43.5 40 L 44.5 40 A 1.50015 1.50015 0 1 0 44.5 37 L 43.5 37 C 39.617958 37 38.151053 37.327132 35.798828 38.070312 L 35.796875 38.070312 C 34.155259 38.589709 33.199298 39 30.5 39 C 27.171247 39 25.088446 37.850777 23.78125 37.134766 L 23.78125 37.132812 C 23.629714 37.049993 23.473869 36.955248 23.238281 36.847656 L 17.253906 33.853516 L 17.212891 33.837891 C 16.228577 33.41667 15.755627 32.333575 16.117188 31.324219 C 16.413965 30.500413 17.180402 30 18.001953 30 C 18.477313 30 19.580931 30.220936 20.955078 30.474609 C 23.808429 31.002704 24.995144 31 25.484375 31 C 27.329408 31 29.449362 30.280058 30.748047 28.332031 A 1.50015 1.50015 0 0 0 29.470703 25.982422 A 1.50015 1.50015 0 0 0 28.251953 26.667969 C 27.550638 27.719942 26.669342 28 25.484375 28 C 24.933606 28 24.224602 28.0293 21.501953 27.525391 L 21.5 27.525391 C 21.273702 27.483615 21.081592 27.445091 20.867188 27.402344 L 29.519531 17.458984 C 30.00983 17.749223 30.524691 18.080632 31.097656 18.498047 C 31.148886 18.539207 33.3572 20.313459 36.076172 22.138672 C 37.451326 23.061796 38.944338 23.989584 40.373047 24.710938 C 41.801756 25.432291 43.105254 26 44.5 26 A 1.50015 1.50015 0 1 0 44.5 23 C 44.123746 23 42.977228 22.664663 41.726562 22.033203 C 40.475898 21.401744 39.059892 20.52711 37.748047 19.646484 C 35.124356 17.885233 32.919922 16.115234 32.919922 16.115234 L 32.892578 16.09375 L 32.863281 16.072266 C 32.398147 15.733408 31.955434 15.440524 31.517578 15.164062 L 33.798828 12.542969 A 1.50015 1.50015 0 0 0 33.800781 12.542969 C 34.937356 11.235535 35.276247 9.3777172 34.626953 7.7851562 L 35.037109 7.3125 A 2.0002 2.0002 0 0 0 33.548828 3.9785156 z M 30.505859 7.9765625 C 30.929333 7.9824118 31.355641 8.1804598 31.679688 8.5957031 A 1.50015 1.50015 0 0 0 31.681641 8.5957031 C 32.098765 9.1296036 32.044928 9.9878741 31.535156 10.574219 L 28.197266 14.408203 A 1.50015 1.50015 0 0 0 27.890625 14.759766 L 17.173828 27.072266 C 15.440573 27.365921 13.922196 28.564982 13.294922 30.310547 L 13.292969 30.3125 C 13.112885 30.815233 13.040074 31.329505 13.025391 31.839844 L 8.4628906 37.082031 C 8.405113 37.147917 8.3317698 37.1984 8.25 37.226562 L 5.5 38.173828 L 6.0820312 35.345703 C 6.0989783 35.262933 6.1382402 35.185256 6.1953125 35.119141 L 6.1953125 35.117188 L 7.9101562 33.146484 A 1.50015 1.50015 0 0 0 8.28125 32.720703 L 22.888672 15.9375 A 1.50015 1.50015 0 0 0 23.152344 15.634766 L 29.349609 8.515625 A 1.50015 1.50015 0 0 0 29.351562 8.5136719 C 29.661747 8.1570623 30.082386 7.9707132 30.505859 7.9765625 z M 17.421875 17.650391 L 6.2753906 30.455078 C 6.0221688 30.410884 5.7757109 30.324774 5.5605469 30.146484 C 4.9477194 29.638885 4.9062095 28.484458 5.4960938 27.806641 L 12.515625 19.742188 C 13.038632 19.140802 13.725777 18.704675 14.492188 18.486328 L 17.421875 17.650391 z"></path>
+                     </svg>
+                  </i>
+                  {{blog.createdat|date:'H:i:s d-m-Y '}}
+               </div>
+               <div class="flex items-center mt-2">
+                  <i class="mr-2 flex">
+                     <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        x="0px"
+                        y="0px"
+                        width="27"
+                        height="27"
+                        viewBox="0 0 48 48">
+                        <path
+                           d="M 24 6 C 17.929961 6 12.553302 9.0232192 9.296875 13.634766 A 1.5002303 1.5002303 0 1 0 11.748047 15.365234 C 14.465619 11.51678 18.924039 9 24 9 C 32.081522 9 38.623419 15.350806 38.966797 23.345703 L 36.560547 20.939453 A 1.50015 1.50015 0 0 0 35.484375 20.484375 A 1.50015 1.50015 0 0 0 34.439453 23.060547 L 38.939453 27.560547 A 1.50015 1.50015 0 0 0 41.060547 27.560547 L 41.408203 27.212891 A 1.50015 1.50015 0 0 0 41.697266 26.923828 L 45.560547 23.060547 A 1.50015 1.50015 0 1 0 43.439453 20.939453 L 41.921875 22.457031 C 41.135061 13.254043 33.402911 6 24 6 z M 7.9785156 20 A 1.50015 1.50015 0 0 0 6.9394531 20.439453 L 6.5976562 20.78125 A 1.50015 1.50015 0 0 0 6.3007812 21.078125 L 2.4394531 24.939453 A 1.50015 1.50015 0 1 0 4.5605469 27.060547 L 6.078125 25.542969 C 6.8649392 34.745957 14.597089 42 24 42 C 30.070039 42 35.446698 38.97678 38.703125 34.365234 A 1.5002303 1.5002303 0 1 0 36.251953 32.634766 C 33.534381 36.48322 29.075961 39 24 39 C 15.918478 39 9.3765807 32.649194 9.0332031 24.654297 L 11.439453 27.060547 A 1.50015 1.50015 0 1 0 13.560547 24.939453 L 9.0605469 20.439453 A 1.50015 1.50015 0 0 0 7.9785156 20 z"></path>
+                     </svg>
+                  </i>
+                  {{blog.updatedat|date:'H:i:s d-m-Y'}}
+               </div>
+               <div class="flex items-center mt-2">
+                  <a class="mr-2 flex">
+                     <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        x="0px"
+                        y="0px"
+                        width="27"
+                        height="27"
+                        viewBox="0 0 48 48">
+                        <path
+                           d="M 12.5 6 A 1.50015 1.50015 0 1 0 12.5 9 L 35.5 9 A 1.50015 1.50015 0 1 0 35.5 6 L 12.5 6 z M 9.5 11 A 1.50015 1.50015 0 1 0 9.5 14 L 38.5 14 A 1.50015 1.50015 0 1 0 38.5 11 L 9.5 11 z M 8.5 16 C 6.5850452 16 5 17.585045 5 19.5 L 5 38.5 C 5 40.414955 6.5850452 42 8.5 42 L 39.5 42 C 41.414955 42 43 40.414955 43 38.5 L 43 19.5 C 43 17.585045 41.414955 16 39.5 16 L 8.5 16 z M 8.5 19 L 39.5 19 C 39.795045 19 40 19.204955 40 19.5 L 40 38.5 C 40 38.795045 39.795045 39 39.5 39 L 8.5 39 C 8.2049548 39 8 38.795045 8 38.5 L 8 19.5 C 8 19.204955 8.2049548 19 8.5 19 z"></path>
+                     </svg>
+                  </a>
+                  <span>
+                     {% for collection in blog.collectionId.all %}
+                     <a
+                        href="{% url 'collection' collection.id %}"
+                        class="p-2 ml-1 text-blue-500 border border-blue-500 rounded-lg hover:bg-blue-500 hover:text-white"
+                        >{{collection.name}}
+                     </a>
+                     {% endfor %}
+                  </span>
+               </div>
+               <div class="flex items-center mt-2">
+                  <i class="mr-2 flex">
+                     <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        x="0px"
+                        y="0px"
+                        width="27"
+                        height="27"
+                        viewBox="0 0 48 48">
+                        <g fill="#339AF0">
+                           <path
+                              d="M 22.566406 4.1015625 A 1.50015 1.50015 0 0 0 21.376953 4.7480469 C 21.376953 4.7480469 19.800401 7.0353874 17.894531 9.6328125 C 15.988661 12.230238 13.667085 15.199917 12.564453 16.242188 C 10.476915 18.216003 9 20.901502 9 23.941406 L 9 30.5 C 9 36.83361 14.16639 42 20.5 42 L 29.839844 42 C 33.608263 42 36.80997 39.17385 37.28125 35.435547 L 37.802734 31.707031 L 38.642578 25.707031 L 38.986328 23.261719 C 39.44602 19.979767 36.852377 17 33.539062 17 L 25.068359 17 C 25.760675 15.285488 26.269684 13.733223 26.625 11.986328 A 1.50015 1.50015 0 0 0 26.626953 11.986328 C 26.834844 10.962945 27.009766 10.160054 27.009766 9.3066406 C 27.009766 7.2502388 25.959673 5.7737331 24.941406 5.0351562 C 23.923093 4.2965795 22.865234 4.1210937 22.865234 4.1210938 A 1.50015 1.50015 0 0 0 22.566406 4.1015625 z M 23.138672 7.4453125 C 23.160002 7.4597825 23.158108 7.4491928 23.179688 7.4648438 C 23.610421 7.7772669 24.009766 8.1530425 24.009766 9.3066406 C 24.009766 9.6812269 23.891656 10.374055 23.685547 11.388672 C 23.317219 13.199539 22.89917 14.610616 22.125 16.417969 A 1.50015 1.50015 0 0 0 22.125 16.419922 C 21.799959 17.181231 21.832249 18.040712 22.230469 18.751953 C 22.628685 19.463147 23.478462 20 24.375 20 L 33.539062 20 C 35.083748 20 36.22798 21.315655 36.013672 22.845703 L 35.671875 25.292969 L 34.832031 31.292969 L 34.308594 35.035156 A 1.50015 1.50015 0 0 0 34.304688 35.058594 C 34.021141 37.323145 32.121296 39 29.839844 39 L 20.5 39 C 15.78761 39 12 35.21239 12 30.5 L 12 23.941406 C 12 21.873311 13.004538 19.954059 14.625 18.421875 C 16.189368 16.943146 18.37662 14.046528 20.3125 11.408203 C 21.860136 9.2989994 22.666748 8.1244476 23.138672 7.4453125 z"></path>
+                        </g>
+                     </svg>
+                  </i>
+                  {{like_count}}
+               </div>
+               <div class="flex items-center mt-2">
+                  <i class="mr-2 flex">
+                     <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        x="0px"
+                        y="0px"
+                        width="27"
+                        height="27"
+                        viewBox="0 0 48 48">
+                        <g
+                           fill="#fa5252"
+                           fill-rule="nonzero"
+                           stroke="none"
+                           stroke-width="1"
+                           stroke-linecap="butt"
+                           stroke-linejoin="miter"
+                           stroke-miterlimit="10"
+                           stroke-dasharray=""
+                           stroke-dashoffset="0"
+                           font-family="none"
+                           font-weight="none"
+                           font-size="none"
+                           text-anchor="none"
+                           style="mix-blend-mode: normal">
+                           <path
+                              d="M 20.5 6 C 14.16639 6 9 11.16639 9 17.5 L 9 24.058594 C 9 27.098498 10.476915 29.783997 12.564453 31.757812 C 13.667085 32.800083 15.988661 35.769762 17.894531 38.367188 C 19.800401 40.964613 21.376953 43.251953 21.376953 43.251953 A 1.50015 1.50015 0 0 0 22.865234 43.878906 C 22.865234 43.878906 23.92314 43.703421 24.941406 42.964844 C 25.959673 42.226267 27.009766 40.749761 27.009766 38.693359 C 27.009766 37.839946 26.834844 37.037055 26.626953 36.013672 A 1.50015 1.50015 0 0 0 26.625 36.013672 C 26.269731 34.266777 25.760675 32.714512 25.068359 31 L 33.539062 31 C 36.852378 31 39.44602 28.020233 38.986328 24.738281 L 38.642578 22.292969 L 37.802734 16.292969 L 37.283203 12.570312 C 37.282939 12.568212 37.28155 12.566653 37.28125 12.564453 C 36.810017 8.8261908 33.608263 6 29.839844 6 L 20.5 6 z M 20.5 9 L 29.839844 9 C 32.121296 9 34.021147 10.676853 34.304688 12.941406 A 1.50015 1.50015 0 0 0 34.308594 12.964844 L 34.832031 16.707031 L 35.671875 22.707031 L 36.013672 25.154297 C 36.227986 26.684343 35.083748 28 33.539062 28 L 24.375 28 C 23.478462 28 22.628689 28.536806 22.230469 29.248047 C 21.832249 29.959288 21.799959 30.818769 22.125 31.580078 A 1.50015 1.50015 0 0 0 22.125 31.582031 C 22.89917 33.389384 23.317219 34.800461 23.685547 36.611328 C 23.891656 37.625945 24.009766 38.318773 24.009766 38.693359 C 24.009766 39.846958 23.610421 40.222733 23.179688 40.535156 C 23.158107 40.550806 23.160012 40.540257 23.138672 40.554688 C 22.666752 39.875507 21.860136 38.701001 20.3125 36.591797 C 18.37662 33.953472 16.189368 31.056854 14.625 29.578125 C 13.004538 28.045941 12 26.126689 12 24.058594 L 12 17.5 C 12 12.78761 15.78761 9 20.5 9 z"></path>
+                        </g>
+                     </svg>
+                  </i>
+                  {{dislike_count}}
+               </div>
+               <button id="audioButton" class="mx-auto flex">
+                  Audio:
+                  <i>
+                     <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        x="0px"
+                        y="0px"
+                        width="27"
+                        height="27"
+                        viewBox="0 0 48 48">
+                        <path
+                           d="M 11.396484 4.1113281 C 9.1042001 4.2020187 7 6.0721788 7 8.5917969 L 7 39.408203 C 7 42.767694 10.742758 44.971891 13.681641 43.34375 L 41.490234 27.935547 C 44.513674 26.260259 44.513674 21.739741 41.490234 20.064453 L 13.681641 4.65625 C 12.94692 4.2492148 12.160579 4.0810979 11.396484 4.1113281 z M 11.431641 7.0664062 C 11.690234 7.0652962 11.961284 7.1323321 12.226562 7.2792969 L 40.037109 22.6875 C 41.13567 23.296212 41.13567 24.703788 40.037109 25.3125 L 12.226562 40.720703 C 11.165446 41.308562 10 40.620712 10 39.408203 L 10 8.5917969 C 10 7.9855423 10.290709 7.5116121 10.714844 7.2617188 C 10.926911 7.136772 11.173048 7.0675163 11.431641 7.0664062 z"></path>
+                     </svg>
+                  </i>
+               </button>
+            </div>
+         </div>
+         <a
+            href="{% url 'profile' blog.userid.username %}"
+            class="w-full bg-blue-800 text-white font-bold text-sm uppercase rounded hover:bg-blue-700 flex items-center justify-center px-2 py-3 mt-4">
+            Xem thêm
+         </a>
+      </div>
+      <div class="w-full bg-white shadow flex flex-col my-4 p-6">
+         <p class="text-xl font-semibold pb-5">Blog ngẫu nhiên</p>
+         <div class="grid grid-cols-3 gap-3">
+            {% for blog in randomblogs %}
+            <a href="{% url 'blog' blog.id %}" class="w-150 h-150 rounded-lg">
+               <img
+                  class="hover:opacity-75 object-cover object-center w-full h-full"
+                  src="{{blog.image.url}}" />
+            </a>
+            {% endfor %}
+         </div>
+         <a
+            href="https://www.facebook.com/snyano/"
+            class="w-full bg-blue-800 text-white font-bold text-sm uppercase rounded hover:bg-blue-700 flex items-center justify-center px-2 py-3 mt-6">
+            <i class="fab fa-instagram mr-2"></i> Follow @snyano
+         </a>
+      </div>
+   </aside>
+</div>
+<div class="border-t border-blueGray-200">
+   <p class="flex justify-center text-gray-500 m-4">
+      Bài viết này hữu ích không ?
+   </p>
+   <div class="flex justify-center items-center">
+      <form method="post" action="{% url 'reaction' blog.id %}">
+         {% csrf_token %} <input type="hidden" name="reaction" value="like" />
+         {% if reaction == 'like' %}
+         <button type="submit" class="flex justify-center">
+            <i>
+               <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  x="0px"
+                  y="0px"
+                  fill="#228be6"
+                  width="26"
+                  height="26"
+                  viewBox="0 0 48 48">
+                  <path
+                     d="M36.9,19.5c-0.9-1-2.1-1.5-3.4-1.5h-9.2c-0.2,0-0.3-0.1-0.4-0.2c-0.1-0.2-0.1-0.4,0-0.6c0.8-1.8,1.3-3.4,1.7-5.4	C25.9,10.7,26,10,26,9.3c0-2.9-2.2-4-3.3-4.2c-0.2,0-0.4,0-0.5,0.2c-0.1,0.1-6.4,9.2-8.9,11.7c-2.1,2-3.3,4.5-3.3,7v6.6	C10,36.3,14.7,41,20.5,41h9.3c3.3,0,6-2.4,6.5-5.7L38,23.1C38.2,21.8,37.8,20.5,36.9,19.5z"></path>
+               </svg>
+            </i>
+            {{like_count}}
+         </button>
+         {% else %}
+         <button type="submit" class="flex justify-center">
+            <i>
+               <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  x="0px"
+                  y="0px"
+                  fill="#228be6"
+                  width="26"
+                  height="26"
+                  viewBox="0 0 48 48">
+                  <path
+                     d="M 22.566406 4.1015625 A 1.50015 1.50015 0 0 0 21.376953 4.7480469 C 21.376953 4.7480469 19.800401 7.0353874 17.894531 9.6328125 C 15.988661 12.230238 13.667085 15.199917 12.564453 16.242188 C 10.476915 18.216003 9 20.901502 9 23.941406 L 9 30.5 C 9 36.83361 14.16639 42 20.5 42 L 29.839844 42 C 33.608263 42 36.80997 39.17385 37.28125 35.435547 L 37.802734 31.707031 L 38.642578 25.707031 L 38.986328 23.261719 C 39.44602 19.979767 36.852377 17 33.539062 17 L 25.068359 17 C 25.760675 15.285488 26.269684 13.733223 26.625 11.986328 A 1.50015 1.50015 0 0 0 26.626953 11.986328 C 26.834844 10.962945 27.009766 10.160054 27.009766 9.3066406 C 27.009766 7.2502388 25.959673 5.7737331 24.941406 5.0351562 C 23.923093 4.2965795 22.865234 4.1210937 22.865234 4.1210938 A 1.50015 1.50015 0 0 0 22.566406 4.1015625 z M 23.138672 7.4453125 C 23.160002 7.4597825 23.158108 7.4491928 23.179688 7.4648438 C 23.610421 7.7772669 24.009766 8.1530425 24.009766 9.3066406 C 24.009766 9.6812269 23.891656 10.374055 23.685547 11.388672 C 23.317219 13.199539 22.89917 14.610616 22.125 16.417969 A 1.50015 1.50015 0 0 0 22.125 16.419922 C 21.799959 17.181231 21.832249 18.040712 22.230469 18.751953 C 22.628685 19.463147 23.478462 20 24.375 20 L 33.539062 20 C 35.083748 20 36.22798 21.315655 36.013672 22.845703 L 35.671875 25.292969 L 34.832031 31.292969 L 34.308594 35.035156 A 1.50015 1.50015 0 0 0 34.304688 35.058594 C 34.021141 37.323145 32.121296 39 29.839844 39 L 20.5 39 C 15.78761 39 12 35.21239 12 30.5 L 12 23.941406 C 12 21.873311 13.004538 19.954059 14.625 18.421875 C 16.189368 16.943146 18.37662 14.046528 20.3125 11.408203 C 21.860136 9.2989994 22.666748 8.1244476 23.138672 7.4453125 z"></path>
+               </svg>
+            </i>
+            {{like_count}}
+         </button>
+         {% endif %}
+      </form>
+      <span class="mx-2"> | </span>
+      <form method="post" action="{% url 'reaction' blog.id %}">
+         {% csrf_token %}
+         <input type="hidden" name="reaction" value="dislike" />
+         {% if reaction == 'dislike' %}
+         <button type="submit" class="flex justify-center">
+            <i class="font-bold">
+               <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  x="0px"
+                  y="0px"
+                  fill="#fa5252"
+                  width="26"
+                  height="26"
+                  viewBox="0 0 48 48">
+                  <path
+                     d="M38,24.9l-1.7-12.2C35.9,9.4,33.1,7,29.8,7h-9.3C14.7,7,10,11.7,10,17.5v6.6c0,2.5,1.2,5,3.3,7c2.6,2.5,8.9,11.6,8.9,11.7	c0.1,0.1,0.2,0.2,0.4,0.2c0,0,0.1,0,0.1,0c1.1-0.2,3.3-1.3,3.3-4.2c0-0.6-0.1-1.4-0.4-2.5c-0.4-2-0.9-3.6-1.7-5.4	c-0.1-0.2-0.1-0.4,0-0.6c0.1-0.1,0.2-0.2,0.4-0.2h9.2c1.3,0,2.5-0.6,3.4-1.5C37.8,27.5,38.2,26.2,38,24.9z"></path>
+               </svg>
+            </i>
+            {{dislike_count}}
+         </button>
+         {% else %}
+         <button type="submit" class="flex justify-center">
+            <i>
+               <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  x="0px"
+                  y="0px"
+                  width="26"
+                  height="26"
+                  viewBox="0 0 48 48">
+                  <g
+                     fill="#fa5252"
+                     fill-rule="nonzero"
+                     stroke="none"
+                     stroke-width="1"
+                     stroke-linecap="butt"
+                     stroke-linejoin="miter"
+                     stroke-miterlimit="10"
+                     stroke-dasharray=""
+                     stroke-dashoffset="0"
+                     font-family="none"
+                     font-weight="none"
+                     font-size="none"
+                     text-anchor="none"
+                     style="mix-blend-mode: normal">
+                     <path
+                        d="M 20.5 6 C 14.16639 6 9 11.16639 9 17.5 L 9 24.058594 C 9 27.098498 10.476915 29.783997 12.564453 31.757812 C 13.667085 32.800083 15.988661 35.769762 17.894531 38.367188 C 19.800401 40.964613 21.376953 43.251953 21.376953 43.251953 A 1.50015 1.50015 0 0 0 22.865234 43.878906 C 22.865234 43.878906 23.92314 43.703421 24.941406 42.964844 C 25.959673 42.226267 27.009766 40.749761 27.009766 38.693359 C 27.009766 37.839946 26.834844 37.037055 26.626953 36.013672 A 1.50015 1.50015 0 0 0 26.625 36.013672 C 26.269731 34.266777 25.760675 32.714512 25.068359 31 L 33.539062 31 C 36.852378 31 39.44602 28.020233 38.986328 24.738281 L 38.642578 22.292969 L 37.802734 16.292969 L 37.283203 12.570312 C 37.282939 12.568212 37.28155 12.566653 37.28125 12.564453 C 36.810017 8.8261908 33.608263 6 29.839844 6 L 20.5 6 z M 20.5 9 L 29.839844 9 C 32.121296 9 34.021147 10.676853 34.304688 12.941406 A 1.50015 1.50015 0 0 0 34.308594 12.964844 L 34.832031 16.707031 L 35.671875 22.707031 L 36.013672 25.154297 C 36.227986 26.684343 35.083748 28 33.539062 28 L 24.375 28 C 23.478462 28 22.628689 28.536806 22.230469 29.248047 C 21.832249 29.959288 21.799959 30.818769 22.125 31.580078 A 1.50015 1.50015 0 0 0 22.125 31.582031 C 22.89917 33.389384 23.317219 34.800461 23.685547 36.611328 C 23.891656 37.625945 24.009766 38.318773 24.009766 38.693359 C 24.009766 39.846958 23.610421 40.222733 23.179688 40.535156 C 23.158107 40.550806 23.160012 40.540257 23.138672 40.554688 C 22.666752 39.875507 21.860136 38.701001 20.3125 36.591797 C 18.37662 33.953472 16.189368 31.056854 14.625 29.578125 C 13.004538 28.045941 12 26.126689 12 24.058594 L 12 17.5 C 12 12.78761 15.78761 9 20.5 9 z"></path>
+                  </g>
+               </svg>
+            </i>
+            {{dislike_count}}
+         </button>
+         {% endif %}
+      </form>
+   </div>
+</div>
+{% comment %} display all comments {% endcomment %}
+<div class="w-full flex justify-center items-center pt-4">
+   <div class="w-2/3">
+      {% if request.session.user %}
+      <form
+         action="{% url 'comment' blog.id %}"
+         method="POST"
+         class="flex items-center gap-4">
+         {% csrf_token %}
+         <div class="flex-shrink-0">
+            <img
+               class="w-12 h-12 rounded-full ring-1"
+               src="{{ request.session.user.avatar }}"
+               alt="{{ request.session.user.username }}'s avatar" />
+         </div>
+         <div class="w-full">
+            <div class="relative w-full min-w-[300px]">
+               <textarea
+                  name="content"
+                  id="content"
+                  class="peer focus:ring-0 focus:outline-none border-2 focus:border-2 focus:border-pink-500 focus:border-t-transparent h-full min-h-[50px] w-full resize-none rounded-[7px] border-blue-gray-200 bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 transition-all placeholder-shown:border-blue-gray-200 disabled:resize-none disabled:border-0 disabled:bg-blue-gray-50"
+                  placeholder=" "></textarea>
+               <label
+                  class="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:border-pink-500 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
+                  Viết trả lời ngay...
+               </label>
+            </div>
+         </div>
+         <button
+            type="submit"
+            class="middle none center rounded-full p-3 shadow-md transition-all hover:shadow-lg hover:shadow-pink-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+            data-ripple-light="true">
+            <svg
+               xmlns="http://www.w3.org/2000/svg"
+               x="0px"
+               y="0px"
+               width="20"
+               height="20"
+               viewBox="0,0,256,256">
+               <g
+                  fill="#5c7cfa"
+                  fill-rule="nonzero"
+                  stroke="none"
+                  stroke-width="1"
+                  stroke-linecap="butt"
+                  stroke-linejoin="miter"
+                  stroke-miterlimit="10"
+                  stroke-dasharray=""
+                  stroke-dashoffset="0"
+                  font-family="none"
+                  font-weight="none"
+                  font-size="none"
+                  text-anchor="none"
+                  style="mix-blend-mode: normal">
+                  <g transform="scale(5.33333,5.33333)">
+                     <path
+                        d="M5.44531,4.00195c-0.48431,0.01805 -0.93007,0.26896 -1.19676,0.67363c-0.26668,0.40468 -0.32144,0.91326 -0.14699,1.36543l5.5,14.20117c0.1926,0.4957 0.63325,0.85238 1.1582,0.9375l14.94141,2.42578c0.37223,0.06035 0.33594,0.16781 0.33594,0.39453c0,0.22672 0.03629,0.33418 -0.33594,0.39453l-14.94141,2.42578c-0.52495,0.08512 -0.9656,0.4418 -1.1582,0.9375l-5.5,14.20117c-0.22282,0.57754 -0.06801,1.23263 0.38976,1.64933c0.45777,0.4167 1.12449,0.50944 1.6786,0.23348l37,-18.5c0.50825,-0.2541 0.82931,-0.77356 0.82931,-1.3418c0,-0.56823 -0.32106,-1.08769 -0.82931,-1.3418l-37,-18.5c-0.22466,-0.11188 -0.47381,-0.1656 -0.72461,-0.15625z"></path>
+                  </g>
+               </g>
+            </svg>
+         </button>
+      </form>
+      {% else %}
+      <p class="text-center">
+         Bạn cần phải
+         <a href="{% url 'login' %}" class="font-bold hover:text-blue-500"
+            >Đăng nhập</a
+         >
+         để bình luận
+      </p>
+      {% endif %}
+      <ul>
+         {% for comment in comments %}
+         <li class="flex mt-4">
+            <div class="flex-shrink-0 mr-4">
+               <a href="/@{{comment.iduser}}">
+                  <img
+                     class="w-12 h-12 rounded-full ring-1"
+                     src="{{ comment.iduser.avatar.url }}"
+                     alt="{{ comment.iduser.username }}'s avatar" />
+               </a>
+            </div>
+            <div class="flex items-center bg-gray-100 p-2 rounded-lg">
+               <div class="ml-3">
+                  <a
+                     class="text-sm font-bold"
+                     href="/@{{comment.iduser.username}}">
+                     {{comment.iduser.firstname}} {{comment.iduser.lastname}}
+                  </a>
+                  <div
+                     class="flex space-x-1 text-sm"
+                     id="comment-{{comment.id}}">
+                     <p>{{comment.content|linebreaks}}</p>
+                  </div>
+               </div>
+            </div>
+            {% if request.session.user.username == comment.iduser.username %}
+            <div class="flex items-center w-28">
+               <button
+                  class="middle none center flex items-center justify-center rounded-lg p-3 font-sans text-xs font-bold uppercase transition-all disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                  data-ripple-dark="true"
+                  data-popover-target="notifications-menu">
+                  °°°
+               </button>
+               <ul
+                  role="menu"
+                  data-popover="notifications-menu"
+                  data-popover-placement="bottom"
+                  class="absolute z-10 flex min-w-[180px] flex-col gap-2 overflow-auto rounded-md border border-blue-gray-50 bg-white p-3 font-sans text-sm font-normal text-blue-gray-500 shadow-lg shadow-blue-gray-500/10 focus:outline-none">
+                  <form action="{% url 'comment' blog.id %}" method="POST">
+                     {% csrf_token %} {% method_override 'DELETE' %}
+                     <input type="hidden" name="_method" value="DELETE" />
+                     <input
+                        type="hidden"
+                        name="commentId"
+                        value="{{comment.id}}" />
+                     <button
+                        type="submit"
+                        role="menuitem"
+                        class="flex w-full cursor-pointer select-none items-center gap-4 rounded-md px-3 py-2 pr-8 pl-2 text-start leading-tight outline-none transition-all hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900 focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900">
+                        <p
+                           class="hover:text-red-500 block font-sans text-sm font-normal leading-normal text-gray-700 antialiased flex justify-center gap-2 items-center">
+                           <i>
+                              <svg
+                                 xmlns="http://www.w3.org/2000/svg"
+                                 x="0px"
+                                 y="0px"
+                                 fill="currentColor"
+                                 width="20"
+                                 height="20"
+                                 viewBox="0 0 48 48">
+                                 <path
+                                    d="M 20.5 4 A 1.50015 1.50015 0 0 0 19.066406 6 L 14.640625 6 C 12.803372 6 11.082924 6.9194511 10.064453 8.4492188 L 7.6972656 12 L 7.5 12 A 1.50015 1.50015 0 1 0 7.5 15 L 8.2636719 15 A 1.50015 1.50015 0 0 0 8.6523438 15.007812 L 11.125 38.085938 C 11.423352 40.868277 13.795836 43 16.59375 43 L 31.404297 43 C 34.202211 43 36.574695 40.868277 36.873047 38.085938 L 39.347656 15.007812 A 1.50015 1.50015 0 0 0 39.728516 15 L 40.5 15 A 1.50015 1.50015 0 1 0 40.5 12 L 40.302734 12 L 37.935547 8.4492188 C 36.916254 6.9202798 35.196001 6 33.359375 6 L 28.933594 6 A 1.50015 1.50015 0 0 0 27.5 4 L 20.5 4 z M 14.640625 9 L 33.359375 9 C 34.196749 9 34.974746 9.4162203 35.439453 10.113281 L 36.697266 12 L 11.302734 12 L 12.560547 10.113281 A 1.50015 1.50015 0 0 0 12.5625 10.111328 C 13.025982 9.4151428 13.801878 9 14.640625 9 z M 11.669922 15 L 36.330078 15 L 33.890625 37.765625 C 33.752977 39.049286 32.694383 40 31.404297 40 L 16.59375 40 C 15.303664 40 14.247023 39.049286 14.109375 37.765625 L 11.669922 15 z"></path>
+                              </svg>
+                           </i>
+                           Xoá bình luận
+                        </p>
+                     </button>
+                  </form>
+                  <button
+                     role="menuitem"
+                     onclick="editComment({{comment.id}})"
+                     class="flex w-full cursor-pointer select-none items-center gap-4 rounded-md px-3 py-2 pr-8 pl-2 text-start leading-tight outline-none transition-all hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900 focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900">
+                     <p
+                        class="hover:text-blue-500 block font-sans text-sm font-normal leading-normal text-gray-700 antialiased flex justify-center gap-2">
+                        <i>
+                           <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              x="0px"
+                              y="0px"
+                              width="20"
+                              fill="currentColor"
+                              height="20"
+                              viewBox="0 0 48 48">
+                              <path
+                                 d="M 36 5.0097656 C 34.205301 5.0097656 32.410791 5.6901377 31.050781 7.0507812 L 8.9160156 29.183594 C 8.4960384 29.603571 8.1884588 30.12585 8.0253906 30.699219 L 5.0585938 41.087891 A 1.50015 1.50015 0 0 0 6.9121094 42.941406 L 17.302734 39.974609 A 1.50015 1.50015 0 0 0 17.304688 39.972656 C 17.874212 39.808939 18.39521 39.50518 18.816406 39.083984 L 40.949219 16.949219 C 43.670344 14.228094 43.670344 9.7719064 40.949219 7.0507812 C 39.589209 5.6901377 37.794699 5.0097656 36 5.0097656 z M 36 7.9921875 C 37.020801 7.9921875 38.040182 8.3855186 38.826172 9.171875 A 1.50015 1.50015 0 0 0 38.828125 9.171875 C 40.403 10.74675 40.403 13.25325 38.828125 14.828125 L 36.888672 16.767578 L 31.232422 11.111328 L 33.171875 9.171875 C 33.957865 8.3855186 34.979199 7.9921875 36 7.9921875 z M 29.111328 13.232422 L 34.767578 18.888672 L 16.693359 36.962891 C 16.634729 37.021121 16.560472 37.065723 16.476562 37.089844 L 8.6835938 39.316406 L 10.910156 31.521484 A 1.50015 1.50015 0 0 0 10.910156 31.519531 C 10.933086 31.438901 10.975086 31.366709 11.037109 31.304688 L 29.111328 13.232422 z"></path>
+                           </svg>
+                        </i>
+                        Chỉnh sửa
+                     </p>
+                  </button>
+               </ul>
+            </div>
+            {% endif %}
+         </li>
+         {% endfor %}
+      </ul>
+   </div>
+</div>
+<script>
+   function editComment(id) {
+      var comment = document.getElementById("comment-" + id);
+      var form = document.createElement("form");
+
+      var width = document.getElementById("content").offsetWidth;
+      form.setAttribute("action", "{% url 'comment' blog.id %}");
+      form.setAttribute("method", "POST");
+      form.setAttribute("class", `relative w-full min-w-[${width - 50}px]`);
+      form.setAttribute("id", "form-edit");
+
+      var csrf_token = document.createElement("input");
+      csrf_token.setAttribute("type", "hidden");
+      csrf_token.setAttribute("name", "csrfmiddlewaretoken");
+      csrf_token.setAttribute("value", "{{ csrf_token }}");
+      form.appendChild(csrf_token);
+
+      var method = document.createElement("input");
+      method.setAttribute("type", "hidden");
+      method.setAttribute("name", "_method");
+      method.setAttribute("value", "PUT");
+      form.appendChild(method);
+
+      var commentid = document.createElement("input");
+      commentid.setAttribute("type", "hidden");
+      commentid.setAttribute("name", "commentId");
+      commentid.setAttribute("value", id);
+      form.appendChild(commentid);
+
+      var input = document.createElement("textarea");
+      input.setAttribute("name", "content");
+      input.setAttribute("id", "content");
+      // auto resize textarea
+      input.setAttribute(
+         "oninput",
+         "this.style.height = '';this.style.height = this.scrollHeight + 'px'",
+      );
+      input.value = comment.innerText;
+      input.setAttribute(
+         "class",
+         "updatecomment peer focus:ring-0 focus:outline-none border-2 focus:border-2 focus:border-pink-500 focus:border-t-transparent h-full min-h-[50px] w-full resize-none rounded-[7px] border-blue-gray-200 bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 transition-all placeholder-shown:border-blue-gray-200 disabled:resize-none disabled:border-0 disabled:bg-blue-gray-50",
+      );
+      form.appendChild(input);
+
+      var label = document.createElement("label");
+      label.setAttribute("for", "content");
+      label.setAttribute(
+         "class",
+         "before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:border-pink-500 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500",
+      );
+      label.innerText = "Viết trả lời ngay...";
+      form.appendChild(label);
+
+      // div grap button
+      var div = document.createElement("div");
+      div.setAttribute("class", "flex space-x-1 justify-end");
+      form.appendChild(div);
+
+      var button = document.createElement("button");
+      button.setAttribute("type", "submit");
+      button.setAttribute(
+         "class",
+         "border border-blue-500 hover:bg-blue-500 hover:text-white rounded-lg p-2 transition-all",
+      );
+      button.innerText = "Cập nhật";
+      div.appendChild(button);
+
+      var buttonClose = document.createElement("button");
+      buttonClose.setAttribute("type", "button");
+      buttonClose.setAttribute(
+         "class",
+         "border border-red-600 rounded-lg p-2 hover:bg-red-600 hover:text-white transition-all",
+      );
+      buttonClose.innerText = "Đóng";
+
+      buttonClose.setAttribute(
+         "onclick",
+         "closeEditComment(" + id + ", '" + comment.innerText + "')",
+      );
+      div.appendChild(buttonClose);
+      comment.replaceWith(form);
+      var textarea = document.getElementsByClassName("updatecomment")[0];
+      textarea.focus();
+   }
+
+   function closeEditComment(id, content) {
+      var form = document.getElementById("form-edit");
+      var comment = document.createElement("div");
+      comment.setAttribute("class", "flex space-x-1 text-sm");
+      comment.setAttribute("id", "comment-" + id);
+      var p = document.createElement("p");
+      p.innerText = content;
+      comment.appendChild(p);
+      form.replaceWith(comment);
+   }
+
+   function getAllTextContent(element) {
+      let textContent = "";
+
+      for (let i = 0; i < element.childNodes.length; i++) {
+         const node = element.childNodes[i];
+
+         // Check if the node is a text node
+         if (node.nodeType === Node.TEXT_NODE) {
+            textContent += node.textContent;
+         }
+
+         // Recursively process child nodes
+         if (node.nodeType === Node.ELEMENT_NODE) {
+            textContent += getAllTextContent(node);
+         }
+      }
+
+      return textContent;
+   }
+
+   if ("speechSynthesis" in window) {
+      const speechSynthesis = window.speechSynthesis;
+      const audioButton = document.getElementById("audioButton");
+      const content = document.getElementById("content");
+      const textInput = getAllTextContent(content);
+      const text = textInput;
+
+      // Create a SpeechSynthesisUtterance instance
+      const utterance = new SpeechSynthesisUtterance(text);
+
+      // Stop any ongoing speech
+      speechSynthesis.cancel();
+
+      // Generate speech audio and set it as the source of the audio element
+      speechSynthesis.addEventListener("voiceschanged", () => {
+         const voices = speechSynthesis.getVoices();
+         const vietnameseVoice = voices.find((voice) => voice.lang === "vi-VN");
+         if (vietnameseVoice) {
+            utterance.voice = vietnameseVoice;
+         } else {
+            utterance.voice = voices[0];
+         }
+         utterance.text = text; // Set the text of the utterance
+      });
+
+      let isPaused = false; // Flag to keep track of the speech state
+
+      // Function to toggle between pause and resume
+      const toggleSpeech = () => {
+         if (isPaused) {
+            speechSynthesis.resume();
+            isPaused = false;
+         } else {
+            isPaused = true;
+            speechSynthesis.pause();
+         }
+      };
+
+      const toogleIconPlay = (play) => {
+         if (play == true) {
+            audioButton.innerHTML = `Audio: <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="27" height="27" viewBox="0 0 48 48">
+               <path d="M 10.5 5 C 8.0324991 5 6 7.0324991 6 9.5 L 6 38.5 C 6 40.967501 8.0324991 43 10.5 43 L 15.5 43 C 17.967501 43 20 40.967501 20 38.5 L 20 9.5 C 20 7.0324991 17.967501 5 15.5 5 L 10.5 5 z M 32.5 5 C 30.032499 5 28 7.0324991 28 9.5 L 28 38.5 C 28 40.967501 30.032499 43 32.5 43 L 37.5 43 C 39.967501 43 42 40.967501 42 38.5 L 42 9.5 C 42 7.0324991 39.967501 5 37.5 5 L 32.5 5 z M 10.5 8 L 15.5 8 C 16.346499 8 17 8.6535009 17 9.5 L 17 38.5 C 17 39.346499 16.346499 40 15.5 40 L 10.5 40 C 9.6535009 40 9 39.346499 9 38.5 L 9 9.5 C 9 8.6535009 9.6535009 8 10.5 8 z M 32.5 8 L 37.5 8 C 38.346499 8 39 8.6535009 39 9.5 L 39 38.5 C 39 39.346499 38.346499 40 37.5 40 L 32.5 40 C 31.653501 40 31 39.346499 31 38.5 L 31 9.5 C 31 8.6535009 31.653501 8 32.5 8 z"></path>
+               </svg>`;
+         } else {
+            audioButton.innerHTML = `
+            Audio: 
+               <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  x="0px"
+                  y="0px"
+                  width="27"
+                  height="27"
+                  viewBox="0 0 48 48">
+                  <path
+                     d="M 11.396484 4.1113281 C 9.1042001 4.2020187 7 6.0721788 7 8.5917969 L 7 39.408203 C 7 42.767694 10.742758 44.971891 13.681641 43.34375 L 41.490234 27.935547 C 44.513674 26.260259 44.513674 21.739741 41.490234 20.064453 L 13.681641 4.65625 C 12.94692 4.2492148 12.160579 4.0810979 11.396484 4.1113281 z M 11.431641 7.0664062 C 11.690234 7.0652962 11.961284 7.1323321 12.226562 7.2792969 L 40.037109 22.6875 C 41.13567 23.296212 41.13567 24.703788 40.037109 25.3125 L 12.226562 40.720703 C 11.165446 41.308562 10 40.620712 10 39.408203 L 10 8.5917969 C 10 7.9855423 10.290709 7.5116121 10.714844 7.2617188 C 10.926911 7.136772 11.173048 7.0675163 11.431641 7.0664062 z"></path>
+               </svg>
+            `;
+         }
+      };
+
+      // Play or pause/resume the speech audio when the audioButton is clicked
+      audioButton.addEventListener("click", () => {
+         if (speechSynthesis.speaking) {
+            toggleSpeech();
+            toogleIconPlay(!isPaused);
+         } else {
+            toogleIconPlay(true);
+            speechSynthesis.speak(utterance);
+         }
+      });
+   }
+</script>
+{% endblock %}

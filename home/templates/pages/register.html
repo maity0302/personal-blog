@@ -1,0 +1,211 @@
+{% extends "pages/base.html" %} {% block title %} Đăng ký tài khoản {%endblock%}
+{%load static from static %} {% block content %} {% comment %} Get current date
+{% endcomment %} {% now "d" as current_day %} {% now "F" as current_month %} {%
+now "Y" as current_year %}
+<section>
+   <div class="flex flex-col justify-center min- py-12 sm:px-6 lg:px-8">
+      <div class="sm:mx-auto sm:w-full sm:max-w-md">
+         <h2 class="mt-6 text-3xl font-extrabold text-center text-neutral-600">
+            Đăng ký tài khoản
+         </h2>
+      </div>
+
+      <div class="sm:mx-auto sm:w-full sm:max-w-md">
+         <div class="px-4 py-8 sm:px-10">
+            <form
+               class="space-y-6"
+               action="/register"
+               method="POST"
+               autocomplete="off">
+               {% csrf_token %}
+               <div class="flex items-center justify-between gap-x-2">
+                  <input
+                     type="text"
+                     name="firstname"
+                     id="firstname"
+                     placeholder="Họ"
+                     class="block w-1/2 px-5 py-3 text-base text-neutral-600 transition duration-500 ease-in-out transform border border-transparent rounded-lg bg-gray-50 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300" />
+                  <input
+                     type="text"
+                     name="lastname"
+                     id="lastname"
+                     placeholder="Tên"
+                     class="block w-1/2 px-5 py-3 text-base text-neutral-600 transition duration-500 ease-in-out transform border border-transparent rounded-lg bg-gray-50 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300" />
+               </div>
+
+               <div>
+                  <div class="mt-1">
+                     <input
+                        id="username"
+                        name="username"
+                        autocomplete="off"
+                        type="text"
+                        placeholder="Tên đăng nhập"
+                        class="block w-full px-5 py-3 text-base text-neutral-600 transition duration-500 ease-in-out transform border border-transparent rounded-lg bg-gray-50 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300" />
+                  </div>
+               </div>
+
+               <div>
+                  <div class="mt-1">
+                     <input
+                        id="email"
+                        name="email"
+                        autocomplete="off"
+                        type="email"
+                        placeholder="Địa chỉ Email"
+                        class="block w-full px-5 py-3 text-base text-neutral-600 transition duration-500 ease-in-out transform border border-transparent rounded-lg bg-gray-50 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300" />
+                  </div>
+               </div>
+
+               <div>
+                  <div class="mt-1">
+                     <input
+                        id="password"
+                        name="password"
+                        type="password"
+                        placeholder="Mật khẩu"
+                        class="block w-full px-5 py-3 text-base text-neutral-600 transition duration-500 ease-in-out transform border border-transparent rounded-lg bg-gray-50 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300" />
+                  </div>
+               </div>
+               <div>
+                  <div class="mt-1">
+                     <input
+                        id="password_confirm"
+                        name="password_confirm"
+                        type="password"
+                        placeholder="Nhập lại mật khẩu"
+                        class="block w-full px-5 py-3 text-base text-neutral-600 transition duration-500 ease-in-out transform border border-transparent rounded-lg bg-gray-50 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300" />
+                  </div>
+               </div>
+
+               <div>
+                  <label
+                     for="birthday_day"
+                     class="block text-sm font-medium text-gray-700">
+                     Sinh nhật
+                  </label>
+                  <div class="mt-1 flex items-center justify-between gap-x-2">
+                     <select
+                        id="birthday_day"
+                        name="birthday_day"
+                        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
+                        {% for day in days %} {% if day == "3" %}
+                        <option value="{{ day }}" selected>{{ day }}</option>
+                        {% else %}
+                        <option value="{{ day }}">{{ day }}</option>
+                        {% endif %} {% endfor %}
+                     </select>
+
+                     <select
+                        id="birthday_month"
+                        name="birthday_month"
+                        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
+                        {% for month in months %} {% if month == "02" %}
+                        <option value="{{ month.0 }}" selected>
+                           {{ month.1 }}
+                        </option>
+                        {% else %}
+                        <option value="{{ month.0 }}">{{ month.1 }}</option>
+                        {% endif %} {% endfor %}
+                     </select>
+                     <select
+                        id="birthday_year"
+                        name="birthday_year"
+                        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
+                        {% for year in years %} {%if year == "2002"%}
+                        <option value="{{ year }}" selected>{{ year }}</option>
+                        {% else %}
+                        <option value="{{ year }}">{{ year }}</option>
+                        {% endif %} {% endfor %}
+                     </select>
+                  </div>
+               </div>
+
+               <div class="mt-1 flex items-center justify-between gap-x-2">
+                  <div
+                     class="flex items-center gap-x-4 border border-gray-300 p-2 rounded-lg">
+                     <label
+                        for="male"
+                        class="flex block text-sm font-medium leading-6">
+                        Nam
+                     </label>
+                     <input
+                        id="male"
+                        name="gender"
+                        type="radio"
+                        value="male"
+                        class="flex w-4 h-4 text-blue-600 border-gray-300 rounded-full focus:ring-blue-500" />
+                  </div>
+                  <div
+                     class="flex items-center gap-x-4 border border-gray-300 p-2 rounded-lg">
+                     <label
+                        for="female"
+                        class="block text-sm font-medium leading-6">
+                        Nữ
+                     </label>
+                     <input
+                        id="female"
+                        name="gender"
+                        type="radio"
+                        value="female"
+                        class="w-4 h-4 text-blue-600 border-gray-300 rounded-full focus:ring-blue-500" />
+                  </div>
+                  <div
+                     class="flex items-center gap-x-4 border border-gray-300 p-2 rounded-lg">
+                     <label
+                        for="null"
+                        class="block text-sm font-medium leading-6">
+                        Không xác định
+                     </label>
+                     <input
+                        id="null"
+                        name="gender"
+                        value="null"
+                        type="radio"
+                        class="w-4 h-4 text-blue-600 border-gray-300 rounded-full focus:ring-blue-500" />
+                  </div>
+               </div>
+
+               <div class="flex items-center justify-end">
+                  <div class="text-sm">
+                     <a
+                        href="/login"
+                        class="font-medium text-blue-600 hover:text-blue-500">
+                        Đã có tài khoản?
+                     </a>
+                  </div>
+               </div>
+
+               <div class="font-extrabold text-center text-red-600">
+                  {% if messages %}
+                  <ul class="messages">
+                     {% for message in messages %}
+                     <li
+                        {%
+                        if
+                        message.tags
+                        %}
+                        class="{{ message.tags }}"
+                        {%
+                        endif
+                        %}>
+                        {{ message }}
+                     </li>
+                     {% endfor %}
+                  </ul>
+                  {% endif %}
+               </div>
+
+               <div>
+                  <button
+                     type="submit"
+                     class="flex items-center justify-center w-full px-10 py-4 text-base font-medium text-center text-white transition duration-500 ease-in-out transform bg-blue-600 rounded-xl hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                     Đăng ký
+                  </button>
+               </div>
+            </form>
+         </div>
+      </div>
+   </div>
+</section>
+{% endblock %}
